@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.API", "Todo.API\Todo.API.csproj", "{D8BA25E9-5433-4605-94FE-F6FAF67D920F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Data", "Todo.Data\Todo.Data.csproj", "{EBC38F24-BB76-4C83-ACD0-35EBA0E15D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Service", "Todo.Service\Todo.Service.csproj", "{0C9CFAE2-BA3F-4739-BF28-24F4B1D694A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8BA25E9-5433-4605-94FE-F6FAF67D920F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8BA25E9-5433-4605-94FE-F6FAF67D920F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8BA25E9-5433-4605-94FE-F6FAF67D920F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8BA25E9-5433-4605-94FE-F6FAF67D920F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBC38F24-BB76-4C83-ACD0-35EBA0E15D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBC38F24-BB76-4C83-ACD0-35EBA0E15D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBC38F24-BB76-4C83-ACD0-35EBA0E15D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBC38F24-BB76-4C83-ACD0-35EBA0E15D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C9CFAE2-BA3F-4739-BF28-24F4B1D694A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C9CFAE2-BA3F-4739-BF28-24F4B1D694A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C9CFAE2-BA3F-4739-BF28-24F4B1D694A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C9CFAE2-BA3F-4739-BF28-24F4B1D694A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E709C15-C95F-4E34-A698-1B85233A9631}
+	EndGlobalSection
+EndGlobal
