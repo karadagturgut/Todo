@@ -62,7 +62,7 @@ namespace Todo.Service.Assignment
 
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
         {
-            var result = _repository.Where(x => x.Status.Equals(model.Status));
+            var result = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId));
             if (!result.IsSuccess)
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);

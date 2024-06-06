@@ -10,5 +10,6 @@ namespace Todo.Data.DTO
     {
         public int? Status { get; set; }
         public string? Name { get; set; }
+        public int? BoardId { get; set; }
     }
 }
