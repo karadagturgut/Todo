@@ -15,5 +15,6 @@ namespace Todo.Service.Assignment
         ApiResponseDTO Delete(DeleteAssignmentDTO model);
         ApiResponseDTO FilterByStatus(FilterAssignmentDTO model);
         ApiResponseDTO FilterByName(FilterAssignmentDTO model);
+        ApiResponseDTO FilterByBoardId(FilterAssignmentDTO model);
     }
 }

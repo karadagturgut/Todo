@@ -16,10 +16,10 @@ namespace Todo.API.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpPost]
+        public IActionResult GetAll(FilterAssignmentDTO model)
         {
-            var result = _service.GetAll();
+            var result = _service.FilterByBoardId(model);
             return Ok(result);  
         }
 

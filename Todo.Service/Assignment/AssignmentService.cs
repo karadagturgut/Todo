@@ -65,6 +65,20 @@ namespace Todo.Service.Assignment
             return ApiResponseDTO.Success(null, "Güncelleme başarılı.");
         }
 
+        /// <summary>
+        /// BoardId değerine göre 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ApiResponseDTO FilterByBoardId(FilterAssignmentDTO model)
+        {
+            var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+
+            return ApiResponseDTO.Success(JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
+
+        }
+
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
         {
             var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking();
