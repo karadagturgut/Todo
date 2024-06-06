@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.DTO
+namespace Todo.Data.DTO.Board
 {
-    public class CreateAssignmentDTO
+    public class CreateBoardDTO
     {
         public string Name { get; set; }
-        public string? Description { get; set; }
-        public int BoardId { get; set; }
     }
 }

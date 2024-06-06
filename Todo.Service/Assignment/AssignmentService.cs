@@ -28,7 +28,7 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Ekleme başarılı.");
+            return ApiResponseDTO.Success(result.Data, "Ekleme başarılı.");
         }
 
         public ApiResponseDTO Delete(DeleteAssignmentDTO model)
@@ -38,29 +38,36 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Silme işlemi başarılı.");
+            return ApiResponseDTO.Success(result.Data, "Silme işlemi başarılı.");
 
         }
 
         public ApiResponseDTO Update(UpdateAssignmentDTO model)
         {
-            var mapped = _mapper.Map<Assignments>(model);
-            var result = _repository.Update(mapped);
+            var existingRecord = _repository.GetById(model.Id).Data;
+            if (existingRecord == null)
+            {
+                return ApiResponseDTO.Failed("Kayıt bulunamadı.");
+            } 
+            
+            // Sadece gerekli alanları güncellemek için eşleme yapılıyor.
+            _mapper.Map(model, existingRecord);
+            var result = _repository.Update(existingRecord);
             if (!result.IsSuccess)
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Güncelleme başarılı.");
+            return ApiResponseDTO.Success(result.Data, "Güncelleme başarılı.");
         }
 
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
         {
-            var result = _repository.Where(x => x.IsCompleted.Equals(model.IsCompleted));
+            var result = _repository.Where(x => x.Status.Equals(model.Status));
             if (!result.IsSuccess)
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Durum Filtresine Göre Sonuçlar:");
+            return ApiResponseDTO.Success(result.Data, "Durum Filtresine Göre Sonuçlar:");
         }
 
         public ApiResponseDTO FilterByName(FilterAssignmentDTO model)
@@ -70,7 +77,7 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Arama Sonuçları:");
+            return ApiResponseDTO.Success(result.Data, "Arama Sonuçları:");
         }
 
         public ApiResponseDTO GetAll()
@@ -80,7 +87,7 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result, "Tüm Görevler:");
+            return ApiResponseDTO.Success(result.Data, "Tüm Görevler:");
         }
     }
 }

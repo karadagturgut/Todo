@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.DTO
+namespace Todo.Data.DTO.Board
 {
-    public class FilterAssignmentDTO
+    public class UpdateBoardDTO
     {
-        public int? Status { get; set; }
+        public int? Id { get; set; }
         public string? Name { get; set; }
+        public bool? Status { get; set; }
     }
 }

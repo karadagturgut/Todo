@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Todo.Data.Repository;
 using Todo.Data;
 using Todo.Service.Assignment;
+using Todo.Service.Board;
 
 namespace Todo.Service
 {
@@ -22,6 +23,7 @@ namespace Todo.Service
             #endregion
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAssignmentService, AssignmentService>();
+            services.AddScoped<IBoardService, BoardService>();
 
             return services;
         }

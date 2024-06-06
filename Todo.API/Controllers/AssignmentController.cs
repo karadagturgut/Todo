@@ -30,7 +30,7 @@ namespace Todo.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPatch]
         public IActionResult Update(UpdateAssignmentDTO model)
         {
             var result = _service.Update(model);
@@ -56,6 +56,7 @@ namespace Todo.API.Controllers
             var result = _service.FilterByName(model);
             return Ok(result);
         }
+       
 
     }
 }
