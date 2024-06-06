@@ -38,7 +38,7 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result.Data, "Silme işlemi başarılı.");
+            return ApiResponseDTO.Success(null, "Silme işlemi başarılı.");
 
         }
 
@@ -57,7 +57,7 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result.Data, "Güncelleme başarılı.");
+            return ApiResponseDTO.Success(null, "Güncelleme başarılı.");
         }
 
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
