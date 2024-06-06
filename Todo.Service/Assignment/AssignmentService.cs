@@ -67,50 +67,18 @@ namespace Todo.Service.Assignment
 
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
         {
-            var result = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId));
-            if (!result.IsSuccess)
-            {
-                return ApiResponseDTO.Failed(result.ErrorMessage);
-            }
-
-            var filtered = result.Data?.AsNoTracking();
+            var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
 
-            var returnResult = filtered?.Join(status, assignments => assignments.Status, status => status.Id,
-                (assignments, status) => new
-                {
-                    Id = assignments.Id,
-                    Name = assignments.Name,
-                    Description = assignments.Description,
-                    BoardId = assignments.BoardId,
-                    Status = status.Name
-                }
-                ).ToList();
-
-            return ApiResponseDTO.Success(returnResult, "Durum Filtresine Göre Sonuçlar:");
+            return ApiResponseDTO.Success(JoinedResult(assignment,status), "Durum Filtresine Göre Sonuçlar:");
         }
 
         public ApiResponseDTO FilterByName(FilterAssignmentDTO model)
         {
-            var result = _repository.Where(x => x.Name.Contains(model.Name));
-            if (!result.IsSuccess)
-            {
-                return ApiResponseDTO.Failed(result.ErrorMessage);
-            }
-            var filtered = result.Data?.AsNoTracking();
+            var assignment = _repository.Where(x => x.Name.Contains(model.Name!)).Data?.AsNoTracking();            
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
 
-            var returnResult = filtered?.Join(status, assignments => assignments.Status, status => status.Id,
-                (assignments, status) => new
-                {
-                    Id = assignments.Id,
-                    Name = assignments.Name,
-                    Description = assignments.Description,
-                    BoardId = assignments.BoardId,
-                    Status = status.Name
-                }
-                ).ToList();
-            return ApiResponseDTO.Success(returnResult, "Arama Sonuçları:");
+            return ApiResponseDTO.Success(JoinedResult(assignment,status), "Arama Sonuçları:");
         }
 
         public ApiResponseDTO GetAll()
@@ -118,8 +86,18 @@ namespace Todo.Service.Assignment
             var assignments = _repository.GetAll()?.Data?.AsNoTracking();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
 
+            return ApiResponseDTO.Success(JoinedResult(assignments,status), "Tüm Görevler:");
+        }
 
-            var result = assignments?.Join(status, assignments => assignments.Status, status => status.Id,
+        /// <summary>
+        /// Assignment ve AssignmentStatus arasında join yapan metod.
+        /// </summary>
+        /// <param name="assignments"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        private object? JoinedResult(IQueryable<Assignments> assignments, IQueryable<AssignmentStatus> status)
+        {
+            return assignments?.Join(status, assignments => assignments.Status, status => status.Id,
                 (assignments, status) => new
                 {
                     Id = assignments.Id,
@@ -129,8 +107,6 @@ namespace Todo.Service.Assignment
                     Status = status.Name
                 }
                 ).ToList();
-
-            return ApiResponseDTO.Success(result, "Tüm Görevler:");
         }
     }
 }
