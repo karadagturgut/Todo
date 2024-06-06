@@ -6,19 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data
+namespace Todo.Data.Entity
 {
-    [Table("Assignments")]
-    public class Assignments
+    [Table("AssignmentStatus")]
+    public class AssignmentStatus
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        public string? Description { get; set; }
-        [Required]
-        public int BoardId { get; set; }
-        [Required]
-        public int Status { get; set; } = 1;
     }
 }

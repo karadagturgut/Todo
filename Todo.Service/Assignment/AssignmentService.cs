@@ -1,23 +1,28 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using Todo.Data;
 using Todo.Data.DTO;
+using Todo.Data.Entity;
 
 namespace Todo.Service.Assignment
 {
     public class AssignmentService : IAssignmentService
     {
         private readonly IGenericRepository<Assignments> _repository;
+        private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IMapper _mapper;
 
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper)
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _statusRepository = statusRepository;
         }
 
         public ApiResponseDTO Add(CreateAssignmentDTO model)
@@ -48,8 +53,8 @@ namespace Todo.Service.Assignment
             if (existingRecord == null)
             {
                 return ApiResponseDTO.Failed("Kayıt bulunamadı.");
-            } 
-            
+            }
+
             // Sadece gerekli alanları güncellemek için eşleme yapılıyor.
             _mapper.Map(model, existingRecord);
             var result = _repository.Update(existingRecord);
@@ -67,7 +72,22 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result.Data, "Durum Filtresine Göre Sonuçlar:");
+
+            var filtered = result.Data?.AsNoTracking();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+
+            var returnResult = filtered?.Join(status, assignments => assignments.Status, status => status.Id,
+                (assignments, status) => new
+                {
+                    Id = assignments.Id,
+                    Name = assignments.Name,
+                    Description = assignments.Description,
+                    BoardId = assignments.BoardId,
+                    Status = status.Name
+                }
+                ).ToList();
+
+            return ApiResponseDTO.Success(returnResult, "Durum Filtresine Göre Sonuçlar:");
         }
 
         public ApiResponseDTO FilterByName(FilterAssignmentDTO model)
@@ -77,17 +97,40 @@ namespace Todo.Service.Assignment
             {
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
-            return ApiResponseDTO.Success(result.Data, "Arama Sonuçları:");
+            var filtered = result.Data?.AsNoTracking();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+
+            var returnResult = filtered?.Join(status, assignments => assignments.Status, status => status.Id,
+                (assignments, status) => new
+                {
+                    Id = assignments.Id,
+                    Name = assignments.Name,
+                    Description = assignments.Description,
+                    BoardId = assignments.BoardId,
+                    Status = status.Name
+                }
+                ).ToList();
+            return ApiResponseDTO.Success(returnResult, "Arama Sonuçları:");
         }
 
         public ApiResponseDTO GetAll()
         {
-            var result = _repository.GetAll();
-            if (!result.IsSuccess)
-            {
-                return ApiResponseDTO.Failed(result.ErrorMessage);
-            }
-            return ApiResponseDTO.Success(result.Data, "Tüm Görevler:");
+            var assignments = _repository.GetAll()?.Data?.AsNoTracking();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+
+
+            var result = assignments?.Join(status, assignments => assignments.Status, status => status.Id,
+                (assignments, status) => new
+                {
+                    Id = assignments.Id,
+                    Name = assignments.Name,
+                    Description = assignments.Description,
+                    BoardId = assignments.BoardId,
+                    Status = status.Name
+                }
+                ).ToList();
+
+            return ApiResponseDTO.Success(result, "Tüm Görevler:");
         }
     }
 }
