@@ -126,6 +126,22 @@ namespace Todo.Service.Assignment
             return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Arama Sonuçları:");
         }
 
+        public ApiResponseDTO GetAssignmentStatuses()
+        {
+            string cacheKey = $"AssignmentStatuses";
+            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
+            if (cachedResponse != null) 
+            {
+                return cachedResponse;
+            }
+            var response = _statusRepository.GetAll();
+            if (!response.IsSuccess)
+            {
+                return ApiResponseDTO.Failed(response.ErrorMessage);
+            }
+            return _cacheService.SetCacheAndGetResponse(cacheKey,response.Data,"Durum Listesi:");
+        }
+
         #region Helper
 
         /// <summary>

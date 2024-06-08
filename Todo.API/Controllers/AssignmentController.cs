@@ -16,6 +16,13 @@ namespace Todo.API.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public IActionResult Statuses() 
+        {
+            var result = _service.GetAssignmentStatuses();
+            return Ok(result);
+        }
+
         [HttpPost]
         public IActionResult GetAll(FilterAssignmentDTO model)
         {
@@ -56,7 +63,6 @@ namespace Todo.API.Controllers
             var result = _service.FilterByName(model);
             return Ok(result);
         }
-       
 
     }
 }
