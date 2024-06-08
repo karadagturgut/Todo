@@ -24,7 +24,7 @@ namespace Todo.Service
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAssignmentService, AssignmentService>();
             services.AddScoped<IBoardService, BoardService>();
-
+            services.AddScoped<CacheService>();
             return services;
         }
     }

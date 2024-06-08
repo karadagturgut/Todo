@@ -9,7 +9,6 @@ namespace Todo.Service.Assignment
 {
     public interface IAssignmentService
     {
-        ApiResponseDTO GetAll();
         ApiResponseDTO Add(CreateAssignmentDTO model);
         ApiResponseDTO Update(UpdateAssignmentDTO model);
         ApiResponseDTO Delete(DeleteAssignmentDTO model);

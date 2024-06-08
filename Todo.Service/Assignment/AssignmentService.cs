@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +13,18 @@ using Todo.Data.Entity;
 
 namespace Todo.Service.Assignment
 {
-    public class AssignmentService : IAssignmentService
+    public partial class AssignmentService : IAssignmentService
     {
         private readonly IGenericRepository<Assignments> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IMapper _mapper;
-
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository)
+        private readonly CacheService _cacheService;
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService)
         {
             _repository = repository;
             _mapper = mapper;
             _statusRepository = statusRepository;
+            _cacheService = cacheService;
         }
 
         public ApiResponseDTO Add(CreateAssignmentDTO model)
@@ -65,43 +67,66 @@ namespace Todo.Service.Assignment
             return ApiResponseDTO.Success(null, "Güncelleme başarılı.");
         }
 
+
         /// <summary>
-        /// BoardId değerine göre 
+        /// Bir board'da bulunan tüm işleri listeler.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public ApiResponseDTO FilterByBoardId(FilterAssignmentDTO model)
         {
-            var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking();
-            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+            string cacheKey = $"Assignments_From_Board_{model.BoardId}";
+            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
+            if (cachedResponse != null)
+            {
+                return cachedResponse;
+            }
 
-            return ApiResponseDTO.Success(JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
-
+            var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
         }
 
+
+        /// <summary>
+        /// Bir board'da bulunan işleri, iş durumuna göre filtreler.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public ApiResponseDTO FilterByStatus(FilterAssignmentDTO model)
         {
-            var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking();
-            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+            string cacheKey = $"Assignment_Filter_Status_{model.Status ?? -1}_Board_{model.BoardId ?? -1}";
+            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
+            if (cachedResponse != null)
+            {
+                return cachedResponse;
+            }
 
-            return ApiResponseDTO.Success(JoinedResult(assignment,status), "Durum Filtresine Göre Sonuçlar:");
+            var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Durum Filtresine Göre Sonuçlar:");
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public ApiResponseDTO FilterByName(FilterAssignmentDTO model)
         {
-            var assignment = _repository.Where(x => x.Name.Contains(model.Name!)).Data?.AsNoTracking();            
-            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
+            string cacheKey = $"Assignments_By_Name_{model.Name}";
+            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
+            if (cachedResponse != null)
+            {
+                return cachedResponse;
+            }
 
-            return ApiResponseDTO.Success(JoinedResult(assignment,status), "Arama Sonuçları:");
+            var assignment = _repository.Where(x => x.Name.Contains(model.Name!) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
+            var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
+
+            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Arama Sonuçları:");
         }
 
-        public ApiResponseDTO GetAll()
-        {
-            var assignments = _repository.GetAll()?.Data?.AsNoTracking();
-            var status = _statusRepository.GetAll()?.Data?.AsNoTracking();
-
-            return ApiResponseDTO.Success(JoinedResult(assignments,status), "Tüm Görevler:");
-        }
+        #region Helper
 
         /// <summary>
         /// Assignment ve AssignmentStatus arasında join yapan metod.
@@ -109,7 +134,7 @@ namespace Todo.Service.Assignment
         /// <param name="assignments"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private object? JoinedResult(IQueryable<Assignments> assignments, IQueryable<AssignmentStatus> status)
+        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status)
         {
             return assignments?.Join(status, assignments => assignments.Status, status => status.Id,
                 (assignments, status) => new
@@ -122,5 +147,7 @@ namespace Todo.Service.Assignment
                 }
                 ).ToList();
         }
+
+        #endregion
     }
 }

@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var conStr = Environment.GetEnvironmentVariable("ConnectionString");
 builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
 builder.Services.RegisterServiceLayer();
-
+builder.Services.AddMemoryCache();
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
