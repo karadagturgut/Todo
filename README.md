@@ -5,7 +5,7 @@ Görev ekleme, silme, güncelleme, kriterlere göre filtreleme işlemlerini yapa
 ## [Swagger URL](https://apitodo.azurewebsites.net/swagger/index.html)
 
 
-## Endpointler
+## Assignment:
 
 ### 1. GET Assignment/GetAll
 
@@ -13,7 +13,7 @@ Tüm görevleri getirir.
 
 - **URL:** `Assignment/GetAll`
 - **Method:** `GET`
-- **Request Parameters:** None
+- **Request Parameters:** Yoktur.
 - **Response:**
 
 ```json
@@ -47,7 +47,7 @@ Tüm görevleri getirir.
 Yeni görev ekler.
 
 - **URL:** `/Assignment/Add`
-- **Method:** `GET`
+- **Method:** `POST`
 - **Request Parameters:** ` "name" : Görev adı. "description": Görev açıklaması(opsiyonel).  `
 - **Response:**
 
@@ -59,7 +59,8 @@ Yeni görev ekler.
     "id": 5,
     "name": "yeni görev",
     "description": null,
-    "isCompleted": false
+    "status": 1,
+    "boardId": 2
   },
   "isSuccess": true,
   "message": "Ekleme başarılı."
@@ -69,12 +70,12 @@ Yeni görev ekler.
 ```
 
 
-### 3. PUT /Assignment/Update
+### 3. PATCH /Assignment/Update
 
 Belirtilen görevi günceller.
 
 - **URL:** `/Assignment/Update`
-- **Method:** `PUT`
+- **Method:** `PATCH`
 - **Request Parameters:** ` "id" : Güncellenecek görev id. "name" : Görev adı. "description": Görev açıklaması. "isCompleted" : Tamamlanma durumu.  `
 - **Response:**
 
@@ -94,7 +95,7 @@ Belirtilen görevi günceller.
 Id parametresinde belirtilen görevi siler.
 
 - **URL:** `/Assignment/Delete`
-- **Method:** `PUT`
+- **Method:** `DELETE`
 - **Request Parameters:** ` "id" : Silinecek görev id.   `
 - **Response:**
 
@@ -117,8 +118,8 @@ Id parametresinde belirtilen görevi siler.
 Görev durumlarına göre görevleri filtreler.
 
 - **URL:** `/Assignment/FilterByStatus`
-- **Method:** `PUT`
-- **Request Parameters:** ` "isCompleted" : Tamamlanma durumu.   `
+- **Method:** `POST`
+- **Request Parameters:** ` "status" : Görevin durumu. "boardId": Board Id(board'a göre filtrelenir, zorunludur.)     `
 - **Response:**
 
 ```json
@@ -146,8 +147,8 @@ Görev durumlarına göre görevleri filtreler.
 İsimlerine göre görevleri filtreler.
 
 - **URL:** `/Assignment/FilterByName`
-- **Method:** `PUT`
-- **Request Parameters:** `  "name" : Görev adı.   `
+- **Method:** `POST`
+- **Request Parameters:** `  "name" : Görev adı. "boardId": Board Id(board'a göre filtrelenir, zorunludur.)   `
 - **Response:**
 
 ```json
@@ -168,3 +169,140 @@ Görev durumlarına göre görevleri filtreler.
 ]
 
 ```
+
+
+
+
+
+## Board:
+
+### 1. GET /Board/GetAll
+
+Tüm boardları getirir.
+
+- **URL:** `/Board/GetAll`
+- **Method:** `GET`
+- **Request Parameters:** Yoktur.
+- **Response:**
+
+```json
+
+[
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Board1",
+      "status": true
+    },
+    {
+      "id": 2,
+      "name": "Board2",
+      "status": true
+    }
+  ],
+  "isSuccess": true,
+  "message": "Tüm Boardlar Listesi:"
+}
+]
+
+```
+
+
+
+### 2. POST /Board/Add
+
+Yeni board ekler.
+
+- **URL:** `/Board/Add`
+- **Method:** `POST`
+- **Request Parameters:** ` "name" : Board adı.  `
+- **Response:**
+
+```json
+
+[
+{
+  "data": {
+    "id": 9,
+    "name": "Board9",
+    "status": true
+  },
+  "isSuccess": true,
+  "message": "Ekleme işlemi başarıyla tamamlandı."
+}
+]
+
+```
+
+
+### 3. PATCH /Board/Update
+
+Belirtilen board'ı günceller.
+
+- **URL:** `/Board/Update`
+- **Method:** `PATCH`
+- **Request Parameters:** ` "id" : Güncellenecek görev id. "name" : Board adı. "status" : Aktif/Pasif durumu.  `
+- **Response:**
+
+```json
+
+[
+{
+  "isSuccess": true,
+  "message": "Güncelleme işlemi başarıyla tamamlandı."
+}
+]
+
+```
+
+
+### 4. DELETE /Board/Delete
+
+Id parametresinde belirtilen board'ı siler.
+
+- **URL:** `/Board/Delete`
+- **Method:** `DELETE`
+- **Request Parameters:** ` "id" : Silinecek görev id.   `
+- **Response:**
+
+```json
+
+[
+{
+  "data": true,
+  "isSuccess": true,
+  "message": "Silme işlemi başarılı."
+}
+]
+
+```
+
+
+
+## RecentlyVisited:
+
+
+
+### 1. GET /RecentlyVisited/Get
+
+Son gidilen 10 endpoint'i getirir. Cookie bazlı çalışır.
+
+- **URL:** `/RecentlyVisited/Get`
+- **Method:** `GET`
+- **Request Parameters:** Yoktur.
+- **Response:**
+
+```json
+
+[
+  "GetAll",
+  "Add",
+  "Update",
+  "Delete"
+]
+
+```
+
+
+
