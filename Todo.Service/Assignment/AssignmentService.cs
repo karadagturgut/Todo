@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using Todo.Data;
 using Todo.Data.DTO;
 using Todo.Data.Entity;
-using Todo.Service.Cache;
 
 namespace Todo.Service.Assignment
 {
@@ -19,8 +11,8 @@ namespace Todo.Service.Assignment
         private readonly IGenericRepository<Assignments> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IMapper _mapper;
-        private readonly ICacheService _cacheService;
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, ICacheService cacheService)
+        private readonly CacheService _cacheService;
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -137,7 +129,7 @@ namespace Todo.Service.Assignment
                 return ApiResponseDTO.Failed(response.ErrorMessage);
             }
 
-            return _cacheService.SetCacheAndGetResponse(cacheKey,response.Data,"Durum Listesi:");
+            return _cacheService.SetCacheAndGetResponse(cacheKey,response.Data.ToList(),"Durum Listesi:");
         }
 
         #region Helper
