@@ -24,6 +24,13 @@ namespace Todo.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public IActionResult ActiveBoards()
+        {
+            var result = _service.GetActiveBoards();
+            return Ok(result);
+        }
+
         [HttpPost]
         public IActionResult Add(CreateBoardDTO model)
         {

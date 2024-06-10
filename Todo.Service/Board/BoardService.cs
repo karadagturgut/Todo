@@ -53,6 +53,16 @@ namespace Todo.Service.Board
             return ApiResponseDTO.Success(result.Data, "Tüm Boardlar Listesi:");
         }
 
+        public ApiResponseDTO GetActiveBoards()
+        {
+            var result = _repository.Where(x => x.Status.Equals(true));
+            if (!result.IsSuccess)
+            {
+                return ApiResponseDTO.Failed("Aktif board listesi getirilirken hata.");
+            }
+
+            return ApiResponseDTO.Success(result.Data, "Aktif Board Listesi:");
+        }
         public ApiResponseDTO Update(UpdateBoardDTO model)
         {
             // Var olan kaydı alıyoruz.

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Todo.Data;
 using Todo.Data.DTO;
 using Todo.Data.Entity;
+using Todo.Service.Cache;
 
 namespace Todo.Service.Assignment
 {
@@ -18,8 +19,8 @@ namespace Todo.Service.Assignment
         private readonly IGenericRepository<Assignments> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IMapper _mapper;
-        private readonly CacheService _cacheService;
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService)
+        private readonly ICacheService _cacheService;
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, ICacheService cacheService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -122,13 +123,21 @@ namespace Todo.Service.Assignment
 
         public ApiResponseDTO GetAssignmentStatuses()
         {
+            string cacheKey = $"AssignmentStatus";
+            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
+            
+            if (cachedResponse != null)
+            {
+                return cachedResponse;
+            }
 
             var response = _statusRepository.GetAll();
             if (!response.IsSuccess)
             {
                 return ApiResponseDTO.Failed(response.ErrorMessage);
             }
-            return ApiResponseDTO.Success(response.Data, null);
+
+            return _cacheService.SetCacheAndGetResponse(cacheKey,response.Data,"Durum Listesi:");
         }
 
         #region Helper

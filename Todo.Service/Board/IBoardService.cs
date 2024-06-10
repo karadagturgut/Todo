@@ -12,6 +12,7 @@ namespace Todo.Service.Board
     public interface IBoardService
     {
         ApiResponseDTO GetAll();
+        ApiResponseDTO GetActiveBoards();
         ApiResponseDTO Add(CreateBoardDTO model);
         ApiResponseDTO Update(UpdateBoardDTO model);
         ApiResponseDTO Delete(DeleteBoardDTO model);
