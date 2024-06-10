@@ -75,16 +75,10 @@ namespace Todo.Service.Assignment
         /// <returns></returns>
         public ApiResponseDTO FilterByBoardId(FilterAssignmentDTO model)
         {
-            string cacheKey = $"Assignments_From_Board_{model.BoardId}";
-            var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
-            if (cachedResponse != null)
-            {
-                return cachedResponse;
-            }
 
             var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
+            return ApiResponseDTO.Success(JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
         }
 
 
@@ -128,13 +122,13 @@ namespace Todo.Service.Assignment
 
         public ApiResponseDTO GetAssignmentStatuses()
         {
-            
+
             var response = _statusRepository.GetAll();
             if (!response.IsSuccess)
             {
                 return ApiResponseDTO.Failed(response.ErrorMessage);
             }
-            return ApiResponseDTO.Success(response.Data,null);
+            return ApiResponseDTO.Success(response.Data, null);
         }
 
         #region Helper
