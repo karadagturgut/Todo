@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.DTO
+namespace Todo.Core
 {
     public class FilterAssignmentDTO
     {

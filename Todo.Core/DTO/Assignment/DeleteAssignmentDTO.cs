@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.DTO.BoardAssignment
+namespace Todo.Core
 {
-    public class DeleteBoardAssignment
+    public class DeleteAssignmentDTO
     {
         public int Id { get; set; }
     }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
+using Todo.Core;
 using Todo.Data;
-using Todo.Data.DTO;
-using Todo.Data.DTO.Board;
 using Todo.Data.Entity;
 
 namespace Todo.Service.Extensions.Map

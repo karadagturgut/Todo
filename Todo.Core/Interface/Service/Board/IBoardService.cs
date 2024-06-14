@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Todo.Data.DTO;
-using Todo.Data.DTO.Board;
-using Todo.Data.DTO.BoardAssignment;
 
-namespace Todo.Service.Board
+
+namespace Todo.Core
 {
     public interface IBoardService
     {

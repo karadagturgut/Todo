@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Todo.Data.Repository;
+using Todo.Core;
 using Todo.Data;
+using Todo.Data.Repository;
 using Todo.Service.Assignment;
 using Todo.Service.Board;
 

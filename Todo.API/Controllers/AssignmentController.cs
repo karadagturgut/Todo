@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Data.DTO;
+using Todo.Core;
 using Todo.Service.Assignment;
 
 namespace Todo.API.Controllers

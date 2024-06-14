@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.DTO.Board
+namespace Todo.Core
 {
-    public class CreateBoardDTO
+    public class DeleteBoardAssignment
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

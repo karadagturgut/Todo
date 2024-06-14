@@ -4,8 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Todo.Core;
 
-namespace Todo.Data
+namespace Todo.Core
 {
     public interface IGenericRepository<T> where T : class
     {
