@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Todo.Core;
 using Todo.Data;
 using Todo.Data.Repository;
 using Todo.Service;
@@ -8,6 +10,9 @@ using Todo.Service.Assignment;
 var builder = WebApplication.CreateBuilder(args);
 var conStr = Environment.GetEnvironmentVariable("ConnectionString");
 builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
+builder.Services.AddIdentity<TodoUser, TodoRole>()
+    .AddEntityFrameworkStores<TodoContext>()
+    .AddDefaultTokenProviders();
 builder.Services.RegisterServiceLayer();
 builder.Services.AddMemoryCache();
 // Add services to the container.

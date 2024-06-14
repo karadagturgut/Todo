@@ -5,6 +5,7 @@ using Todo.Data;
 using Todo.Data.Repository;
 using Todo.Service.Assignment;
 using Todo.Service.Board;
+using Microsoft.AspNetCore.Identity;
 
 namespace Todo.Service
 {
@@ -17,10 +18,15 @@ namespace Todo.Service
             var assembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(assembly);
             #endregion
+
+            #region Sınflar
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAssignmentService, AssignmentService>();
             services.AddScoped<IBoardService, BoardService>();
             services.AddScoped<CacheService>();
+            #endregion
+
+
             return services;
         }
     }
