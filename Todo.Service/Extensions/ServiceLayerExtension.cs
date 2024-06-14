@@ -6,6 +6,9 @@ using Todo.Data.Repository;
 using Todo.Service.Assignment;
 using Todo.Service.Board;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Todo.Service
 {
@@ -23,9 +26,31 @@ namespace Todo.Service
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAssignmentService, AssignmentService>();
             services.AddScoped<IBoardService, BoardService>();
+            services.AddScoped<IAuthService,AuthService>();
             services.AddScoped<CacheService>();
             #endregion
 
+            #region JWT
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+   .AddJwtBearer(options =>
+   {
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidateAudience = true,
+           ValidateLifetime = true,
+           ValidateIssuerSigningKey = true,
+           ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
+           ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
+       };
+   });
+            #endregion
 
             return services;
         }
