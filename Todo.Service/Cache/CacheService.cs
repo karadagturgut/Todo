@@ -33,5 +33,15 @@ namespace Todo.Service
             _memoryCache.Set(cacheKey, response, TimeSpan.FromMinutes(5));
             return response;
         }
+
+        public ApiResponseDTO RemoveCache(string cacheKey)
+        {
+            if (_memoryCache.TryGetValue(cacheKey,out var cachedObject))
+            {
+                _memoryCache.Remove(cacheKey);
+                return ApiResponseDTO.Success(null,$"{cacheKey} cache silindi.");
+            }
+            return ApiResponseDTO.Success(null, "key bulunamadı.");
+        }
     }
 }
