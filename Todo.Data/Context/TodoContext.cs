@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Todo.Data.Entity;
+using Todo.Core;
 
 
 namespace Todo.Data

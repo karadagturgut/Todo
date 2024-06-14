@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo.Data.Entity
+namespace Todo.Core
 {
     [Table("BoardsAssignments")]
     public class BoardsAssignments

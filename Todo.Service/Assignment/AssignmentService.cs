@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Todo.Core;
-using Todo.Data;
-using Todo.Data.Entity;
 
 namespace Todo.Service.Assignment
 {
