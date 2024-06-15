@@ -19,11 +19,6 @@ namespace Todo.Service.Extensions.Map
              .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             #endregion
 
-            #region User
-            CreateMap<TodoUser,AuthDTO>().ReverseMap()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-            #endregion
-
         }
     }
 }
