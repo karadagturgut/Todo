@@ -13,7 +13,7 @@ namespace Todo.Core
         public string? NewPassword { get; set; }
         public string? EMail { get; set; }
         public string? PhoneNumber { get; set; }
-        //public List<string>? Roles { get; set; }
+        public List<string>? Roles { get; set; }
         public string? IpAddress { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
