@@ -11,15 +11,26 @@ namespace Todo.Core
         public object? Data { get; set; }
         public bool? IsSuccess { get; set; }
         public string? Message { get; set; }
+        public int StatusCode { get; set; }
 
         public static ApiResponseDTO Success(object data, string? message)
         {
-            return new ApiResponseDTO { Data = data, Message = message, IsSuccess = true };
+            return new ApiResponseDTO { Data = data, Message = message, IsSuccess = true, StatusCode = 200 };
+        }
+
+        public static ApiResponseDTO SuccessAdded(object data, string? message)
+        {
+            return new ApiResponseDTO { Data = data, Message = message, IsSuccess = true, StatusCode = 201 };
+        }
+
+        public static ApiResponseDTO SuccessNoContent(object data, string? message)
+        {
+            return new ApiResponseDTO { Data = data, Message = message, IsSuccess = true, StatusCode = 204 };
         }
 
         public static ApiResponseDTO Failed(string? message)
         {
-            return new ApiResponseDTO { Data = null, Message = message, IsSuccess = false };
+            return new ApiResponseDTO { Data = null, Message = message, IsSuccess = false, StatusCode = 500 };
         }
 
     }

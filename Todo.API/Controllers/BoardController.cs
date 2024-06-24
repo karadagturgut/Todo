@@ -5,7 +5,7 @@ namespace Todo.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class BoardController : ControllerBase
+    public class BoardController : BaseController
     {
         private readonly IBoardService _service;
 
@@ -18,35 +18,35 @@ namespace Todo.API.Controllers
         public IActionResult GetAll()
         {
             var result = _service.GetAll();
-            return Ok(result);
+            return ApiResponse(result);
         }
 
         [HttpGet]
         public IActionResult ActiveBoards()
         {
             var result = _service.GetActiveBoards();
-            return Ok(result);
+            return ApiResponse(result);
         }
 
         [HttpPost]
         public IActionResult Add(CreateBoardDTO model)
         {
             var result = _service.Add(model);
-            return Ok(result);
+            return ApiResponse(result);
         }
 
         [HttpPatch]
         public IActionResult Update(UpdateBoardDTO model)
         {
             var result = _service.Update(model);
-            return Ok(result);
+            return ApiResponse(result);
         }
 
         [HttpDelete]
         public IActionResult Delete(DeleteBoardDTO model)
         {
             var result = _service.Delete(model);
-            return Ok(result);
+            return ApiResponse(result);
         }
     }
 }
