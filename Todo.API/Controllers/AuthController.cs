@@ -16,7 +16,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login (AuthDTO model)
+        public async Task<IActionResult> Login (LoginDTO model)
         {
             var result = await _authService.Login(model);
             return Ok(result);

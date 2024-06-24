@@ -8,7 +8,7 @@ namespace Todo.Core
 {
     public interface IAuthService
     {
-        Task<ApiResponseDTO> Login(AuthDTO model);
+        Task<ApiResponseDTO> Login(LoginDTO model);
         Task<ApiResponseDTO> Register(AuthDTO model);
         Task<ApiResponseDTO> ChangePassword(AuthDTO model);
         ApiResponseDTO Authorize();

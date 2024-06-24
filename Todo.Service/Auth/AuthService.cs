@@ -33,7 +33,7 @@ namespace Todo.Service
             throw new NotImplementedException();
         }
 
-        public async Task<ApiResponseDTO> Login(AuthDTO model)
+        public async Task<ApiResponseDTO> Login(LoginDTO model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
