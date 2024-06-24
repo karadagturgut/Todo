@@ -50,13 +50,13 @@ namespace Todo.Service
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                //var checkRoles = await CheckRoles(new() { "Admin" });
-                //if (checkRoles)
-                //{
+                var checkRoles = await CheckRoles(new() { "Admin" });
+                if (checkRoles)
+                {
                     await _userManager.AddToRolesAsync(user, new List<string>() { "Admin" });
                     return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
-                //}
-                //return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
+                }
+                return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
             }
             return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu. Sonra tekrar deneyiniz.");
         }

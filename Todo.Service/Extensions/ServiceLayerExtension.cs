@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper.Internal;
+using Todo.Service.Extensions.Map;
 
 namespace Todo.Service
 {
@@ -18,8 +20,7 @@ namespace Todo.Service
         {
 
             #region AutoMapper
-            var assembly = Assembly.GetExecutingAssembly();
-            services.AddAutoMapper(assembly);
+            services.AddAutoMapper(cfg => cfg.Internal().MethodMappingEnabled = false, typeof(MapProfile).Assembly);
             #endregion
 
             #region Sınflar
