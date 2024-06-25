@@ -1,15 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using Todo.Core;
-using Todo.Data;
-using Todo.Data.Repository;
-using Todo.Service.Assignment;
-using Todo.Service.Board;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
-using AutoMapper.Internal;
+using Todo.Core;
+using Todo.Data.Repository;
 using Todo.Service.Extensions.Map;
 
 namespace Todo.Service
@@ -25,9 +21,21 @@ namespace Todo.Service
 
             #region Sınflar
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IAssignmentService, AssignmentService>();
-            services.AddScoped<IBoardService, BoardService>();
-            services.AddScoped<IAuthService,AuthService>();
+
+            var serviceTypes = Assembly.GetExecutingAssembly().GetTypes()
+                        .Where(type => type.Name.EndsWith("Service")
+                                       && type.IsClass
+                                       && !type.IsAbstract
+                                       && type.GetInterfaces().Any());
+
+            foreach (var type in serviceTypes)
+            {
+                foreach (var interfaceType in type.GetInterfaces())
+                {
+                    services.AddScoped(interfaceType, type);
+                }
+            }
+
             services.AddScoped<CacheService>();
             #endregion
 

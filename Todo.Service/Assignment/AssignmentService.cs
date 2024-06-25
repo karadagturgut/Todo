@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Todo.Core;
 
-namespace Todo.Service.Assignment
+namespace Todo.Service
 {
     public partial class AssignmentService : IAssignmentService
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Todo.Core;
 
-namespace Todo.Service.Board
+namespace Todo.Service
 {
     public class BoardService : IBoardService
     {

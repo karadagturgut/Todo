@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using Todo.Core;
 using Todo.Data;
-using Todo.Data.Repository;
 using Todo.Service;
-using Todo.Service.Assignment;
 
 var builder = WebApplication.CreateBuilder(args);
 var conStr = Environment.GetEnvironmentVariable("ConnectionString");
@@ -33,7 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<GeneralMiddleware>();
+app.UseMiddleware<GeneralMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
