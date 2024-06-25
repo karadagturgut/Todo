@@ -19,9 +19,5 @@ namespace Todo.Core
         public string? Surname { get; set; }
     }
 
-    public record LoginDTO
-    {
-        public string UserName { get; init; }
-        public string Password { get; init; }
-    }
+    public record LoginDTO (string UserName, string Password);
 }
