@@ -22,4 +22,6 @@ namespace Todo.Core
     public record LoginDTO (string UserName, string Password);
 
     public record ChangePasswordDTO (string UserName, string Password, string NewPassword);
+
+    public record GoogleSignInDTO(string Token);
 }

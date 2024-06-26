@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Todo.Core;
 
 namespace Todo.Service
@@ -67,6 +62,10 @@ namespace Todo.Service
             return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu. Sonra tekrar deneyiniz.");
         }
 
+        public async Task<ApiResponseDTO> GoogleSignIn(GoogleSignInDTO model)
+        {
+            return ApiResponseDTO.Success(null,"İşlem Başarılı");
+        }
 
         #region Helper
         private async Task<List<Claim>> UserRoles(TodoUser user)

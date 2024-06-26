@@ -1,6 +1,9 @@
 ﻿using AutoMapper.Internal;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -58,6 +61,13 @@ namespace Todo.Service
            ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
        };
+   })
+   .AddCookie("Cookies")
+   .AddGoogle(google =>
+   {
+       google.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+       google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+       google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
    });
             #endregion
 
