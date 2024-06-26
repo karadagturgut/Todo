@@ -28,9 +28,15 @@ namespace Todo.Service
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponseDTO> ChangePassword(AuthDTO model)
+        public async Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model)
         {
-            throw new NotImplementedException();
+            var user =  await _userManager.FindByNameAsync(model.UserName);
+            if (user == null) { return ApiResponseDTO.SuccessNoContent(null, "Kullanıcı bulunamadı.");  }
+
+            var changePassword = await _userManager.ChangePasswordAsync(user,model.Password,model.NewPassword);
+            if (!changePassword.Succeeded) { return ApiResponseDTO.SuccessNoContent(null,"Şifre uyumsuzluğu var. Lütfen kontrol ediniz."); }
+
+            return ApiResponseDTO.Success(null,"İşlem başarıyla tamamlandı.");
         }
 
         public async Task<ApiResponseDTO> Login(LoginDTO model)
@@ -50,10 +56,10 @@ namespace Todo.Service
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                var checkRoles = await CheckRoles(new() { "Admin" });
+                var checkRoles = await CheckRoles(model.Roles);
                 if (checkRoles)
                 {
-                    await _userManager.AddToRolesAsync(user, new List<string>() { "Admin" });
+                    await _userManager.AddToRolesAsync(user,model.Roles);
                     return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
                 }
                 return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");

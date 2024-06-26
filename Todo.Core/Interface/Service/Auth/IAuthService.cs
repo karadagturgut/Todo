@@ -10,7 +10,7 @@ namespace Todo.Core
     {
         Task<ApiResponseDTO> Login(LoginDTO model);
         Task<ApiResponseDTO> Register(AuthDTO model);
-        Task<ApiResponseDTO> ChangePassword(AuthDTO model);
+        Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model);
         ApiResponseDTO Authorize();
     }
 }

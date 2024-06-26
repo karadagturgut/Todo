@@ -27,5 +27,12 @@ namespace Todo.API.Controllers
             var result = await _authService.Register(model);
             return ApiResponse(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO model)
+        {
+            var result = await _authService.ChangePassword(model);
+            return ApiResponse(result);
+        }
     }
 }
