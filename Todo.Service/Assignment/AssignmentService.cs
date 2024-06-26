@@ -8,14 +8,16 @@ namespace Todo.Service
     {
         private readonly IGenericRepository<Assignments> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
+        private readonly IGenericRepository<TodoUser> _userRepository;
         private readonly IMapper _mapper;
         private readonly CacheService _cacheService;
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService)
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService, IGenericRepository<TodoUser> userRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _statusRepository = statusRepository;
             _cacheService = cacheService;
+            _userRepository = userRepository;
         }
 
         public ApiResponseDTO Add(CreateAssignmentDTO model)
@@ -69,7 +71,8 @@ namespace Todo.Service
 
             var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return ApiResponseDTO.Success(JoinedResult(assignment, status), "Bu Board'a Ait Tüm İşler:");
+            var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return ApiResponseDTO.Success(JoinedResult(assignment, status, users), "Bu Board'a Ait Tüm İşler:");
         }
 
 
@@ -89,7 +92,8 @@ namespace Todo.Service
 
             var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Durum Filtresine Göre Sonuçlar:");
+            var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status,users), "Durum Filtresine Göre Sonuçlar:");
         }
         /// <summary>
         /// 
@@ -107,15 +111,15 @@ namespace Todo.Service
 
             var assignment = _repository.Where(x => x.Name.Contains(model.Name!) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
-
-            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status), "Arama Sonuçları:");
+            var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status,users), "Arama Sonuçları:");
         }
 
         public ApiResponseDTO GetAssignmentStatuses()
         {
             string cacheKey = $"AssignmentStatus";
             var cachedResponse = _cacheService.GetByCacheKey(cacheKey);
-            
+
             if (cachedResponse != null)
             {
                 return cachedResponse;
@@ -127,7 +131,7 @@ namespace Todo.Service
                 return ApiResponseDTO.Failed(response.ErrorMessage);
             }
 
-            return _cacheService.SetCacheAndGetResponse(cacheKey,response.Data.ToList(),"Durum Listesi:");
+            return _cacheService.SetCacheAndGetResponse(cacheKey, response.Data.ToList(), "Durum Listesi:");
         }
 
         #region Helper
@@ -138,18 +142,34 @@ namespace Todo.Service
         /// <param name="assignments"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status)
+        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status, List<TodoUser> users)
         {
-            return assignments?.Join(status, assignments => assignments.Status, status => status.Id,
-                (assignments, status) => new
-                {
-                    Id = assignments.Id,
-                    Name = assignments.Name,
-                    Description = assignments.Description,
-                    BoardId = assignments.BoardId,
-                    Status = status.Name
-                }
-                ).ToList();
+            return assignments?
+           .Join(status, assignment => assignment.Status, status => status.Id,
+               (assignment, status) => new
+               {
+                   Id = assignment.Id,
+                   Name = assignment.Name,
+                   Description = assignment.Description,
+                   BoardId = assignment.BoardId,
+                   Status = status.Name,
+                   Assignee = assignment.Assignee,
+                   StartDate = assignment.StartDate,
+                   EndDate = assignment.EndDate
+               })
+           .Join(users, assignmentStatus => assignmentStatus.Assignee, user => user.Id,
+               (assignmentStatus, user) => new
+               {
+                   Id = assignmentStatus.Id,
+                   Name = assignmentStatus.Name,
+                   Description = assignmentStatus.Description,
+                   BoardId = assignmentStatus.BoardId,
+                   Status = assignmentStatus.Status,
+                   AssigneeName = user.UserName,
+                   StartDate = assignmentStatus.StartDate,
+                   EndDate = assignmentStatus.EndDate
+               })
+           .ToList();
         }
 
         #endregion

@@ -20,5 +20,8 @@ namespace Todo.Core
         public int BoardId { get; set; }
         [Required]
         public int Status { get; set; } = 1;
+        public int Assignee { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }
