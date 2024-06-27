@@ -79,8 +79,10 @@ namespace Todo.Service
                     }
                     return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
                 }
+                return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında bir hata oluştu.");
             }
-            return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu. Sonra tekrar deneyiniz.");
+            var token = await helper.JwtTokenProvider(user, UserRoles(user).Result);
+            return ApiResponseDTO.Success(token, "Giriş başarılı");
         }
 
         #region Helper

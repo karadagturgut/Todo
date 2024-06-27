@@ -9,7 +9,5 @@ namespace Todo.Core
 {
     public class TodoRole : IdentityRole<int>
     {
-        public string? Name { get; set; }
-        public string? Surname { get; set; }
     }
 }
