@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authentication;
 public class GeneralMiddleware
 {
     private readonly RequestDelegate _next;
@@ -18,6 +18,8 @@ public class GeneralMiddleware
     {
         try
         {
+            #region Recently Visited
+
             // Önceki değerleri alıyoruz:
             var cookieValue = context.Request.Cookies["RecentlyVisited"];
             List<string> pathList;
@@ -58,6 +60,8 @@ public class GeneralMiddleware
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTimeOffset.UtcNow.AddDays(10)
             });
+
+            #endregion
 
             await _next(context);
         }

@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Todo.Core;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace Todo.API.Controllers
 {
@@ -15,7 +20,7 @@ namespace Todo.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login (LoginDTO model)
+        public async Task<IActionResult> Login(LoginDTO model)
         {
             var result = await _authService.Login(model);
             return ApiResponse(result);
@@ -32,6 +37,36 @@ namespace Todo.API.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO model)
         {
             var result = await _authService.ChangePassword(model);
+            return ApiResponse(result);
+        }
+
+
+        [HttpGet]
+        [Route("/GoogleLogin")]
+        public async Task<IActionResult> LoginGoogle()
+        {
+            var cookieValue = HttpContext.Request.Cookies[Environment.GetEnvironmentVariable("GLoginSetter")];
+
+            if (cookieValue == null)
+            {
+                var properties = new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("SignInGoogle")
+                };
+                return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+            }
+
+            var response = await HttpContext.AuthenticateAsync(Environment.GetEnvironmentVariable("GLoginSetter"));
+            if (response.Principal == null) { Response.Cookies.Delete(Environment.GetEnvironmentVariable("GLoginSetter")); return RedirectToAction("LoginGoogle"); }
+
+            AuthDTO DTO = new()
+            {
+                Name = response.Principal.FindFirstValue(ClaimTypes.GivenName),
+                UserName = response.Principal.FindFirstValue(ClaimTypes.Email),
+                EMail = response.Principal.FindFirstValue(ClaimTypes.Email),
+                Roles = new() { "User" }
+            };
+            var result = await _authService.RegisterExternalService(DTO);
             return ApiResponse(result);
         }
     }

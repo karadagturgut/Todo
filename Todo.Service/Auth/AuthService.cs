@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Todo.Core;
 
 namespace Todo.Service
@@ -30,13 +25,13 @@ namespace Todo.Service
 
         public async Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model)
         {
-            var user =  await _userManager.FindByNameAsync(model.UserName);
-            if (user == null) { return ApiResponseDTO.SuccessNoContent(null, "Kullanıcı bulunamadı.");  }
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null) { return ApiResponseDTO.SuccessNoContent(null, "Kullanıcı bulunamadı."); }
 
-            var changePassword = await _userManager.ChangePasswordAsync(user,model.Password,model.NewPassword);
-            if (!changePassword.Succeeded) { return ApiResponseDTO.SuccessNoContent(null,"Şifre uyumsuzluğu var. Lütfen kontrol ediniz."); }
+            var changePassword = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
+            if (!changePassword.Succeeded) { return ApiResponseDTO.SuccessNoContent(null, "Şifre uyumsuzluğu var. Lütfen kontrol ediniz."); }
 
-            return ApiResponseDTO.Success(null,"İşlem başarıyla tamamlandı.");
+            return ApiResponseDTO.Success(null, "İşlem başarıyla tamamlandı.");
         }
 
         public async Task<ApiResponseDTO> Login(LoginDTO model)
@@ -59,7 +54,7 @@ namespace Todo.Service
                 var checkRoles = await CheckRoles(model.Roles);
                 if (checkRoles)
                 {
-                    await _userManager.AddToRolesAsync(user,model.Roles);
+                    await _userManager.AddToRolesAsync(user, model.Roles);
                     return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
                 }
                 return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
@@ -67,6 +62,26 @@ namespace Todo.Service
             return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu. Sonra tekrar deneyiniz.");
         }
 
+        public async Task<ApiResponseDTO> RegisterExternalService(AuthDTO model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.EMail);
+            if (user == null)
+            {
+                user = _mapper.Map<TodoUser>(model);
+                var createResult = await _userManager.CreateAsync(user);
+                if (createResult.Succeeded)
+                {
+                    var checkRoles = await CheckRoles(model.Roles);
+                    if (checkRoles)
+                    {
+                        await _userManager.AddToRolesAsync(user, model.Roles);
+                        return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
+                    }
+                    return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
+                }
+            }
+            return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu. Sonra tekrar deneyiniz.");
+        }
 
         #region Helper
         private async Task<List<Claim>> UserRoles(TodoUser user)
