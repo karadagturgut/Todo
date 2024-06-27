@@ -42,30 +42,32 @@ namespace Todo.API.Controllers
 
 
         [HttpGet]
-        [Route("login")]
-        public Task LoginGoogle()
+        [Route("/GoogleLogin")]
+        public async Task<IActionResult> LoginGoogle()
         {
-            return HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
+            var cookieValue = HttpContext.Request.Cookies[Environment.GetEnvironmentVariable("GLoginSetter")];
+
+            if (cookieValue == null)
             {
-                RedirectUri = Url.Action("SignInGoogle")
-            });
-
-        }
-
-            [HttpGet("/signin-google")]
-            public async Task<IActionResult> GoogleLogin()
-            {
-                var response = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-                if (response.Principal == null) return BadRequest();
-
-                var name = response.Principal.FindFirstValue(ClaimTypes.Name);
-                var givenName = response.Principal.FindFirstValue(ClaimTypes.GivenName);
-                var email = response.Principal.FindFirstValue(ClaimTypes.Email);
-                //Do something with the claims
-                // var user = await UserService.FindOrCreate(new { name, givenName, email});
-
-                return Ok();
+                var properties = new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("SignInGoogle")
+                };
+                return Challenge(properties, GoogleDefaults.AuthenticationScheme);
             }
 
+            var response = await HttpContext.AuthenticateAsync(Environment.GetEnvironmentVariable("GLoginSetter"));
+            if (response.Principal == null) { Response.Cookies.Delete(Environment.GetEnvironmentVariable("GLoginSetter")); return RedirectToAction("LoginGoogle"); }
+
+            AuthDTO DTO = new()
+            {
+                Name = response.Principal.FindFirstValue(ClaimTypes.GivenName),
+                UserName = response.Principal.FindFirstValue(ClaimTypes.Email),
+                EMail = response.Principal.FindFirstValue(ClaimTypes.Email),
+                Roles = new() { "User" }
+            };
+            var result = await _authService.RegisterExternalService(DTO);
+            return ApiResponse(result);
         }
     }
+}

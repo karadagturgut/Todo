@@ -61,14 +61,19 @@ namespace Todo.Service
            ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
        };
-   })
-   .AddCookie("Cookies")
-   .AddGoogle(google =>
-   {
-       google.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-       google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
-       google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
    });
+
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddCookie().AddGoogle(google =>
+           {
+               google.SignInScheme = "Identity.External";
+               google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+               google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
+           });
             #endregion
 
             return services;
