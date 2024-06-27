@@ -9,5 +9,7 @@ namespace Todo.Core
 {
     public class TodoUser : IdentityUser<int>
     {
+        public string Name { get; set; }
+        public string Surname { get; set; }
     }
 }

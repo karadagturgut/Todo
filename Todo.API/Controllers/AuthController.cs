@@ -61,7 +61,8 @@ namespace Todo.API.Controllers
 
             AuthDTO DTO = new()
             {
-                Name = response.Principal.FindFirstValue(ClaimTypes.GivenName),
+                Name = response.Principal.FindFirstValue(ClaimTypes.Name),
+                Surname = response.Principal.FindFirstValue(ClaimTypes.Surname),
                 UserName = response.Principal.FindFirstValue(ClaimTypes.Email),
                 EMail = response.Principal.FindFirstValue(ClaimTypes.Email),
                 Roles = new() { "User" }
