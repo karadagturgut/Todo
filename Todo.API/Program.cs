@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Todo.API;
 using Todo.Core;
 using Todo.Data;
 using Todo.Service;
@@ -30,7 +31,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<GeneralMiddleware>();
+app.UseMiddleware<RoleAuthorizationMiddleware>();
+app.UseMiddleware<RecentlyVisitedMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

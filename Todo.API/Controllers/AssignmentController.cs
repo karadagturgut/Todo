@@ -16,7 +16,6 @@ namespace Todo.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "User")]
         public IActionResult Statuses() 
         {
             var result = _service.GetAssignmentStatuses();

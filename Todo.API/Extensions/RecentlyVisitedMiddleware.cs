@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-public class GeneralMiddleware
+public class RecentlyVisitedMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public GeneralMiddleware(RequestDelegate next)
+    public RecentlyVisitedMiddleware(RequestDelegate next)
     {
         _next = next;
     }

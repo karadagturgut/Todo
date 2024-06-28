@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Todo.Core;
 
@@ -10,27 +9,65 @@ namespace Todo.Service
     {
         private readonly UserManager<TodoUser> _userManager;
         private readonly RoleManager<TodoRole> _roleManager;
+        private readonly IGenericRepository<ActionRoles> _actionRoleRepository;
         private readonly IMapper _mapper;
         ServiceHelper helper = new ServiceHelper();
-        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper)
+        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRoles> actionRoleRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+            _actionRoleRepository = actionRoleRepository;
         }
 
-        public ApiResponseDTO Authorize()
+
+        public ApiResponseDTO Authorize(AuthorizeDTO model)
         {
-            throw new NotImplementedException();
+            // Veritabanı sorgusu
+            var actionRoleEntries = _actionRoleRepository.Where(ar => ar.Action == model.Path);
+
+            // Veritabanı erişim hatası
+            if (!actionRoleEntries.IsSuccess)
+            {
+                return ApiResponseDTO.Unauthorized("Erişim yetkilerine erişimde hata.");
+            }
+
+            // Null kontrolü
+            var rolesData = actionRoleEntries.Data;
+            if (rolesData == null || !rolesData.Any())
+            {
+                return ApiResponseDTO.Unauthorized("Erişim Reddedildi: Yetkiniz yok.");
+            }
+
+            // IsPublic kontrolü
+            if (rolesData.Any(ar => ar.IsPublic))
+            {
+                return ApiResponseDTO.Success(null, "Kullanıcı yetkili.");
+            }
+
+            // Kullanıcı rollerinin kontrolü
+            var hasValidRole = rolesData.Any(ar => model.Roles.Contains(ar.Roles));
+            if (hasValidRole)
+            {
+                return ApiResponseDTO.Success(null, "Kullanıcı yetkili.");
+            }
+
+            // Yetkisiz erişim
+            return ApiResponseDTO.Unauthorized("Erişim Reddedildi: Yetkiniz yok.");
+        }
+
+        public IEnumerable<ActionRoles> GetActionRolesByPath(string path)
+        {
+            return _actionRoleRepository.Where(ar => ar.Action == path).Data;
         }
 
         public async Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null) { return ApiResponseDTO.SuccessNoContent(null, "Kullanıcı bulunamadı."); }
+            if (user == null) { return ApiResponseDTO.NoContent(null, "Kullanıcı bulunamadı."); }
 
             var changePassword = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
-            if (!changePassword.Succeeded) { return ApiResponseDTO.SuccessNoContent(null, "Şifre uyumsuzluğu var. Lütfen kontrol ediniz."); }
+            if (!changePassword.Succeeded) { return ApiResponseDTO.NoContent(null, "Şifre uyumsuzluğu var. Lütfen kontrol ediniz."); }
 
             return ApiResponseDTO.Success(null, "İşlem başarıyla tamamlandı.");
         }
@@ -119,6 +156,7 @@ namespace Todo.Service
             }
             return false;
         }
+
 
         #endregion
     }

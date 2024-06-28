@@ -22,4 +22,10 @@ namespace Todo.Core
     public record LoginDTO (string UserName, string Password);
 
     public record ChangePasswordDTO (string UserName, string Password, string NewPassword);
+
+    public class AuthorizeDTO
+    {
+        public string Path { get; set; }
+        public List<string> Roles { get; set; }
+    }
 }
