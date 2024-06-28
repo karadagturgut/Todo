@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Todo.Core;
 
@@ -65,6 +66,7 @@ namespace Todo.Service
         public async Task<ApiResponseDTO> RegisterExternalService(AuthDTO model)
         {
             var user = await _userManager.FindByEmailAsync(model.EMail);
+            string token = string.Empty;
             if (user == null)
             {
                 user = _mapper.Map<TodoUser>(model);
@@ -74,14 +76,19 @@ namespace Todo.Service
                     var checkRoles = await CheckRoles(model.Roles);
                     if (checkRoles)
                     {
-                        await _userManager.AddToRolesAsync(user, model.Roles);
-                        return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
+                        var addRoleResult = await _userManager.AddToRolesAsync(user, model.Roles);
+                        if (!addRoleResult.Succeeded)
+                        {
+                            return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında hata oluştu.");
+                        }
+                        token = await helper.JwtTokenProvider(user, UserRoles(user).Result);
+                        return ApiResponseDTO.Success(token, "Kullanıcı başarıyla oluşturuldu. Giriş yapılıyor.");
                     }
                     return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");
                 }
                 return ApiResponseDTO.Failed("Kullanıcı oluşturma sırasında bir hata oluştu.");
             }
-            var token = await helper.JwtTokenProvider(user, UserRoles(user).Result);
+            token = await helper.JwtTokenProvider(user, UserRoles(user).Result);
             return ApiResponseDTO.Success(token, "Giriş başarılı");
         }
 
