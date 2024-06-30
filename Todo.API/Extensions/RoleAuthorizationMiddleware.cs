@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Todo.Core;
 
@@ -40,11 +41,11 @@ public class RoleAuthorizationMiddleware
             }
 
             var userRoles = context.User.Claims
-                .Where(c => c.Type == "role")
-                .Select(c => c.Value)
-                .ToList();
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value).FirstOrDefault();
+                
 
-            var isAuthorized = authService.Authorize(new() { Path = path , Roles = userRoles });
+            var isAuthorized = authService.Authorize(new() { Path = path , Role = userRoles });
 
             if (!isAuthorized.IsSuccess)
             {

@@ -46,7 +46,7 @@ namespace Todo.Service
             }
 
             // Kullanıcı rollerinin kontrolü
-            var hasValidRole = rolesData.Any(ar => model.Roles.Contains(ar.Roles));
+            var hasValidRole = rolesData.Any(x => x.Roles.Contains(model.Role));
             if (hasValidRole)
             {
                 return ApiResponseDTO.Success(null, "Kullanıcı yetkili.");
