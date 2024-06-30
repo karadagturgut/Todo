@@ -1,13 +1,12 @@
 ﻿using AutoMapper.Internal;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using Todo.Core;
+using Todo.Data;
 using Todo.Data.Repository;
 using Todo.Service.Extensions.Map;
 
@@ -44,6 +43,10 @@ namespace Todo.Service
 
             #region JWT
 
+            services.AddIdentity<TodoUser, TodoRole>()
+           .AddEntityFrameworkStores<TodoContext>()
+           .AddDefaultTokenProviders();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,6 +54,8 @@ namespace Todo.Service
             })
    .AddJwtBearer(options =>
    {
+       options.RequireHttpsMetadata = true;
+       options.SaveToken = true;
        options.TokenValidationParameters = new TokenValidationParameters
        {
            ValidateIssuer = true,

@@ -1,16 +1,10 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Todo.API;
-using Todo.Core;
 using Todo.Data;
 using Todo.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var conStr = Environment.GetEnvironmentVariable("ConnectionString");
 builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
-builder.Services.AddIdentity<TodoUser, TodoRole>()
-    .AddEntityFrameworkStores<TodoContext>()
-    .AddDefaultTokenProviders();
 builder.Services.RegisterServiceLayer();
 builder.Services.AddMemoryCache();
 // Add services to the container.
@@ -31,11 +25,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<RoleAuthorizationMiddleware>();
-app.UseMiddleware<RecentlyVisitedMiddleware>();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<RoleAuthorizationMiddleware>();
+app.UseMiddleware<RecentlyVisitedMiddleware>();
 
 app.MapControllers();
 
