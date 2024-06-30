@@ -35,16 +35,6 @@ namespace Todo.Service
             return ApiResponseDTO.Success(null, "Silme işlemi başarıyla tamamlandı.");
         }
 
-        public ApiResponseDTO GetAll()
-        {
-            var result = _repository.GetAll();
-            if (!result.IsSuccess)
-            {
-                return ApiResponseDTO.Failed(result.ErrorMessage);
-            }
-            return ApiResponseDTO.Success(result.Data, "Tüm Boardlar Listesi:");
-        }
-
         public ApiResponseDTO GetActiveBoards()
         {
             var result = _repository.Where(x => x.Status.Equals(true));
@@ -72,6 +62,15 @@ namespace Todo.Service
                 return ApiResponseDTO.Failed(result.ErrorMessage);
             }
             return ApiResponseDTO.Success(null, "Güncelleme işlemi başarıyla tamamlandı.");
+        }
+        public ApiResponseDTO GetListedBoards(ListedBoardsDTO model)
+        {
+            var result = _repository.Where(x=>model.BoardList.Contains(x.Id));
+            if (!result.IsSuccess)
+            {
+                return ApiResponseDTO.Failed("Board Listesi hatası.");
+            }
+            return ApiResponseDTO.Success(result.Data,"Board seçiniz:");
         }
     }
 }

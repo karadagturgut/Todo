@@ -21,6 +21,7 @@ public class RoleAuthorizationMiddleware
         using (var scope = _serviceScopeFactory.CreateScope())
         {
             var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+            var boardService = scope.ServiceProvider.GetRequiredService<IBoardService>();
 
             var path = context.Request.Path.Value;
 
