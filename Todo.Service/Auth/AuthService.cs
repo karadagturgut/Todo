@@ -129,6 +129,13 @@ namespace Todo.Service
             return ApiResponseDTO.Success(token, "Giriş başarılı");
         }
 
+        public async Task<ApiResponseDTO> UserProfile(string userId)
+        {
+            var result = await _userManager.FindByIdAsync(userId);
+            return ApiResponseDTO.Success(result, "Kullanıcı Profili");
+        }
+
+
         #region Helper
         private async Task<List<Claim>> UserRoles(TodoUser user)
         {

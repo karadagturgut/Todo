@@ -14,6 +14,7 @@ namespace Todo.Core
         Task<ApiResponseDTO> Register(AuthDTO model);
         Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model);
         Task<ApiResponseDTO> RegisterExternalService(AuthDTO model);
+        Task<ApiResponseDTO> UserProfile(string userId);
        
     }
 }

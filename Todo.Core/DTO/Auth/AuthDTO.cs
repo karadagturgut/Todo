@@ -28,4 +28,6 @@ namespace Todo.Core
         public string Path { get; set; }
         public string Role { get; set; }
     }
+
+    public record UserProfileDTO(string UserId);
 }

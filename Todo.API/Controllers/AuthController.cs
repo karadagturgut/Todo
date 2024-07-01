@@ -70,5 +70,13 @@ namespace Todo.API.Controllers
             var result = await _authService.RegisterExternalService(DTO);
             return ApiResponse(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UserProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var result = await _authService.UserProfile(userId);
+            return ApiResponse(result);
+        }
     }
 }
