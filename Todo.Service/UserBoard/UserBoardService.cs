@@ -47,7 +47,17 @@ namespace Todo.Service
             {
                 return ApiResponseDTO.Failed("Kullanıcı - Board ilişkilendirme sırasında hata.");
             }
-            return ApiResponseDTO.SuccessAdded(null, "Kullanıcı board'a eklendi.");
+            return ApiResponseDTO.SuccessAdded(null, "Kullanıcı board'dan kaldırıldı.");
+        }
+
+        public ApiResponseDTO UsersByBoardId(UsersBoardDTO model)
+        {
+            var result = _repository.Where(x => x.BoardId.Equals(model.BoardId));
+            if (!result.IsSuccess)
+            {
+                return ApiResponseDTO.Failed("User Id listesi getirilirken hata.");
+            }
+            return ApiResponseDTO.Success(result.Data.Select(x=>x.UserId).ToList(),"UserId Listesi:");
         }
     }
 }

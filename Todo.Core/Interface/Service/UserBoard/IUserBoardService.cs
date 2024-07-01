@@ -11,5 +11,6 @@ namespace Todo.Core
         ApiResponseDTO BoardsByUserId(GetUsersBoardDTO model);
         ApiResponseDTO AddUserBoard(UsersBoardDTO model);
         ApiResponseDTO RemoveUserBoard(UsersBoardDTO model);
+        ApiResponseDTO UsersByBoardId(UsersBoardDTO model);
     }
 }
