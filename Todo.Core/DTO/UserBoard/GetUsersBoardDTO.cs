@@ -10,7 +10,7 @@ namespace Todo.Core
     {
         public int UserId { get; set; }
     }
-    public class UpdateUsersBoardDTO
+    public class UsersBoardDTO
     {
         public int UserId { get; set; }
         public int BoardId { get; set; }

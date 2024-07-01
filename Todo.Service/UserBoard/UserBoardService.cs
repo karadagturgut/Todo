@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,21 @@ namespace Todo.Service
     public class UserBoardService : IUserBoardService
     {
         private readonly IGenericRepository<UserBoard> _repository;
-
-        public UserBoardService(IGenericRepository<UserBoard> repository)
+        private readonly IMapper _mapper;
+        public UserBoardService(IGenericRepository<UserBoard> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
+        }
+
+        public ApiResponseDTO AddUserBoard(UsersBoardDTO model)
+        {
+            var result = _repository.Add(_mapper.Map<UserBoard>(model));
+            if (!result.IsSuccess)
+            {
+                return ApiResponseDTO.Failed("Kullanıcı - Board ilişkilendirme sırasında hata.");
+            }
+            return ApiResponseDTO.SuccessAdded(null,"Kullanıcı board'a eklendi.");
         }
 
         public ApiResponseDTO BoardsByUserId(GetUsersBoardDTO model)
@@ -26,9 +38,16 @@ namespace Todo.Service
             return ApiResponseDTO.Success(result.Data.Select(x=>x.BoardId).ToList(),"Board Id Listesi:");
         }
 
-        public ApiResponseDTO UpdateUserBoard(UpdateUsersBoardDTO model)
+        public ApiResponseDTO RemoveUserBoard(UsersBoardDTO model)
         {
-            throw new NotImplementedException();
+            var deleted = _repository.Where(x=>x.BoardId.Equals(model.BoardId) && x.UserId.Equals(model.UserId));
+            if (!deleted.IsSuccess) { return ApiResponseDTO.Failed("Kullanıcı - Board ilişkilendirme sırasında hata."); }
+            var result = _repository.DeleteById(deleted.Data.FirstOrDefault().Id);
+            if (!result.IsSuccess)
+            {
+                return ApiResponseDTO.Failed("Kullanıcı - Board ilişkilendirme sırasında hata.");
+            }
+            return ApiResponseDTO.SuccessAdded(null, "Kullanıcı board'a eklendi.");
         }
     }
 }

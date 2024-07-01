@@ -9,6 +9,7 @@ namespace Todo.Core
     public interface IUserBoardService
     {
         ApiResponseDTO BoardsByUserId(GetUsersBoardDTO model);
-        ApiResponseDTO UpdateUserBoard(UpdateUsersBoardDTO model);
+        ApiResponseDTO AddUserBoard(UsersBoardDTO model);
+        ApiResponseDTO RemoveUserBoard(UsersBoardDTO model);
     }
 }

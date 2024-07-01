@@ -24,6 +24,10 @@ namespace Todo.Service.Extensions.Map
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             #endregion
 
+            #region UserBoard
+            CreateMap<UsersBoardDTO, UserBoard>().ReverseMap();
+            #endregion
+
         }
     }
 }
