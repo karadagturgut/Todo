@@ -23,7 +23,7 @@ namespace Todo.Service
             {
                 return ApiResponseDTO.Failed("Board Id Listesi Getirilirken Hata Oluştu");
             }
-            return ApiResponseDTO.Success(result.Data.Select(x=>x.Id).ToList(),"Board Id Listesi:");
+            return ApiResponseDTO.Success(result.Data.Select(x=>x.BoardId).ToList(),"Board Id Listesi:");
         }
 
         public ApiResponseDTO UpdateUserBoard(UpdateUsersBoardDTO model)

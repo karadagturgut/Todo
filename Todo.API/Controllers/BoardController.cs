@@ -47,12 +47,11 @@ namespace Todo.API.Controllers
             return ApiResponse(result);
         }
 
-        [HttpPost]
-        public IActionResult GetListedBoards(ListedBoardsDTO model)
+        [HttpGet]
+        public IActionResult GetListedBoards()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var boardIdList = _userBoardService.BoardsByUserId(new() { UserId = Convert.ToInt32(userId) });
-            var boards = _service.GetListedBoards(new ListedBoardsDTO() { BoardList = (List<int>)boardIdList.Data ??new() { 0 } });
+            var boards = _service.GetListedBoards(new() { UserId = Convert.ToInt32(userId) });
             return Ok(boards);
         }
     }

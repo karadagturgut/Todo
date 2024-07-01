@@ -8,6 +8,6 @@ namespace Todo.Core
 {
     public class ListedBoardsDTO
     {
-        public List<int> BoardList { get; set; }
+        public int UserId { get; set; }
     }
 }

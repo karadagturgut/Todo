@@ -6,12 +6,14 @@ namespace Todo.Service
     public class BoardService : IBoardService
     {
         private readonly IGenericRepository<Boards> _repository;
+        private readonly IUserBoardService _userBoardService;
         private readonly IMapper _mapper;
 
-        public BoardService(IGenericRepository<Boards> repository, IMapper mapper)
+        public BoardService(IGenericRepository<Boards> repository, IMapper mapper, IUserBoardService userBoardService)
         {
             _repository = repository;
             _mapper = mapper;
+            _userBoardService = userBoardService;
         }
 
         public ApiResponseDTO Add(CreateBoardDTO model)
@@ -65,12 +67,33 @@ namespace Todo.Service
         }
         public ApiResponseDTO GetListedBoards(ListedBoardsDTO model)
         {
-            var result = _repository.Where(x=>model.BoardList.Contains(x.Id));
-            if (!result.IsSuccess)
+
+            //var result = _repository.Where(x=>model.BoardList.Contains(x.Id)); Syntax near '$ is incorrect. hatası, EF/sql versiyon uyumsuzluğundan dolayı yoruma alındı.
+
+            var boardIdList = _userBoardService.BoardsByUserId(new() { UserId = model.UserId });
+            if (!boardIdList.IsSuccess)
             {
-                return ApiResponseDTO.Failed("Board Listesi hatası.");
+                return ApiResponseDTO.Failed("Kullanıcı kayıtlı olduğu board listesi alınamadı.");
             }
-            return ApiResponseDTO.Success(result.Data,"Board seçiniz:");
+
+            List<Boards> result = new();
+
+            if (boardIdList.Data != null)
+            {
+                foreach (var item in (List<int>)boardIdList.Data)
+                {
+                    var board = _repository.Where(x => x.Id.Equals(item));
+
+                    if (!board.IsSuccess)
+                    {
+                        return ApiResponseDTO.Failed("Board Listesi hatası.");
+                    }
+
+                    result.Add(board.Data.FirstOrDefault());
+                }
+
+            }
+            return ApiResponseDTO.Success(result, "Board seçiniz:");
         }
     }
 }
