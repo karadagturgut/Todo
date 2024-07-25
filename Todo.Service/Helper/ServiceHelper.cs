@@ -18,7 +18,8 @@ namespace Todo.Service
             var claims = new List<Claim>
            {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("Organization", user.OrganizationId.ToString())
             };
             claims.AddRange(roles);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")));

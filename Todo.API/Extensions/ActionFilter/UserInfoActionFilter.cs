@@ -14,6 +14,17 @@ public class UserInfoActionFilter : IActionFilter
                 }
             }
         }
+
+        if (context.HttpContext.Items.TryGetValue("OrganizationId", out var orgId))
+        {
+            foreach (var item in context.ActionArguments.Values)
+            {
+                if (item is BaseDTO baseDto)
+                {
+                    baseDto.OrganizationId = orgId as int?;
+                }
+            }
+        }
     }
 
     public void OnActionExecuted(ActionExecutedContext context)

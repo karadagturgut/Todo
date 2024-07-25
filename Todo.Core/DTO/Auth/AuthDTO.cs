@@ -16,6 +16,7 @@ namespace Todo.Core
         public string? IpAddress { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
+        public int OrganizationId { get; set; }
     }
 
     public record LoginDTO (string UserName, string Password);
@@ -28,5 +29,4 @@ namespace Todo.Core
         public string Role { get; set; }
     }
 
-    public record UserProfileDTO(string UserId);
 }

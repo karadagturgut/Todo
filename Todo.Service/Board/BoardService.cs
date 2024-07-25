@@ -65,7 +65,7 @@ namespace Todo.Service
             }
             return ApiResponseDTO.Success(null, "Güncelleme işlemi başarıyla tamamlandı.");
         }
-        public ApiResponseDTO GetListedBoards(ListedBoardsDTO model)
+        public ApiResponseDTO GetUserBoards(ListedBoardsDTO model)
         {
 
             //var result = _repository.Where(x=>model.BoardList.Contains(x.Id)); Syntax near '$ is incorrect. hatası, EF/sql versiyon uyumsuzluğundan dolayı yoruma alındı.
@@ -94,6 +94,13 @@ namespace Todo.Service
 
             }
             return ApiResponseDTO.Success(result, "Board seçiniz:");
+        }
+
+        public ApiResponseDTO GetOrganizationBoards(OrganizationBoardsDTO model)
+        {
+            var result = _repository.Where(x => x.OrganizationId.Equals(model.OrganizationId));
+            if (!result.IsSuccess) { return ApiResponseDTO.Failed("Organizasyona ait board listesi getirilirken hata."); }
+            return ApiResponseDTO.Success(result, "Organizasyona ait boardlar:");
         }
     }
 }

@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Todo.Core
 {
-    public class GetUsersBoardDTO
+    public class GetUsersBoardDTO : BaseDTO
     {
-        public int UserId { get; set; }
     }
-    public class UsersBoardDTO
+    public class UsersBoardDTO : BaseDTO
     {
-        public int UserId { get; set; }
         public int BoardId { get; set; }
     }
 }

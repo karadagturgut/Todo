@@ -10,4 +10,13 @@ namespace Todo.Core
     {
         public int UserId { get; set; }
     }
+    public class OrganizationBoardsDTO
+    {
+        public int OrganizationId { get; set; }
+
+        public OrganizationBoardsDTO(int organizationId)
+        {
+            OrganizationId = organizationId;
+        }
+    }
 }

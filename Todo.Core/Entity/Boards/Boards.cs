@@ -13,5 +13,6 @@ namespace Todo.Core
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Status { get; set; } = true;
+        public int OrganizationId { get; set; }
     }
 }

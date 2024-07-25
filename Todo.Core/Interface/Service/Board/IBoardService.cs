@@ -13,6 +13,7 @@ namespace Todo.Core
         ApiResponseDTO Add(CreateBoardDTO model);
         ApiResponseDTO Update(UpdateBoardDTO model);
         ApiResponseDTO Delete(DeleteBoardDTO model);
-        ApiResponseDTO GetListedBoards(ListedBoardsDTO model);
+        ApiResponseDTO GetUserBoards(ListedBoardsDTO model);
+        ApiResponseDTO GetOrganizationBoards(OrganizationBoardsDTO model);
     }
 }

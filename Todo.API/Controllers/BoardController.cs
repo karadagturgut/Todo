@@ -10,12 +10,10 @@ namespace Todo.API.Controllers
     public class BoardController : BaseController
     {
         private readonly IBoardService _service;
-        private readonly IUserBoardService _userBoardService;
 
-        public BoardController(IBoardService boardService, IUserBoardService userBoardService)
+        public BoardController(IBoardService boardService)
         {
             _service = boardService;
-            _userBoardService = userBoardService;
         }
 
         [HttpGet]
@@ -47,11 +45,19 @@ namespace Todo.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetListedBoards()
+        public IActionResult GetUserBoards()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var boards = _service.GetListedBoards(new() { UserId = Convert.ToInt32(userId) });
-            return Ok(boards);
+            var boards = _service.GetUserBoards(new() { UserId = Convert.ToInt32(userId) });
+            return ApiResponse(boards);
+        }
+
+        [HttpGet]
+        public IActionResult GetOrganizationBoards()
+        {
+            var request = new OrganizationBoardsDTO(Convert.ToInt32(User.FindFirst("Organization")?.Value));
+            var boards = _service.GetOrganizationBoards(request);
+            return ApiResponse(boards);
         }
     }
 }

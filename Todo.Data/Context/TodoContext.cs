@@ -18,6 +18,7 @@ namespace Todo.Data
         public DbSet<LessonUnit> LessonsUnit { get; set; }
         public DbSet<UserTimeTracker> UserTimeTracker { get; set; }
         public DbSet<AssignmentComment> AssignmentComments { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
         public TodoContext(DbContextOptions<TodoContext> options) : base(options)
         {
         }

@@ -11,5 +11,6 @@ namespace Todo.Core
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public int OrganizationId { get; set; }
     }
 }

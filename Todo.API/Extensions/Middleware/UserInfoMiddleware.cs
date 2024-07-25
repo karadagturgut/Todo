@@ -18,6 +18,12 @@ public class UserInfoMiddleware
             context.Items["UserId"] = parsedUserId;
         }
 
+        var organizationId = context.User.FindFirst("Organization")?.Value;
+        if (!string.IsNullOrEmpty(organizationId) && int.TryParse(organizationId, out var parsedOrganizationId))
+        {
+            context.Items["OrganizationId"] = parsedOrganizationId;
+        }
+
         await _next(context);
     }
 }

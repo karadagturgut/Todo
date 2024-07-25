@@ -10,7 +10,6 @@ namespace Todo.Core
     public class BaseDTO
     {
         public int? UserId { get; set; }
-
-        //public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
     }
 }
