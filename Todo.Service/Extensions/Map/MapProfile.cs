@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Todo.Core;
+using Todo.Core.DTO;
 using Todo.Core.Entity;
 
 namespace Todo.Service.Extensions.Map
@@ -29,11 +30,14 @@ namespace Todo.Service.Extensions.Map
             CreateMap<UsersBoardDTO, UserBoard>().ReverseMap();
             #endregion
 
-            #region
+            #region Lesson
             CreateMap<AddLessonDTO, Lesson>().ReverseMap();
-            CreateMap<UpdateLessonDTO, Lesson>().ReverseMap(); 
+            CreateMap<UpdateLessonDTO, Lesson>().ReverseMap();
             #endregion
 
+            #region Organization
+            CreateMap<OrganizationDTO,Organization>().ReverseMap();
+            #endregion
         }
     }
 }
