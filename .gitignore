@@ -36,8 +36,8 @@ bld/
 # Ignore launchSettings.json
 **/Properties/launchSettings.json
 
-appsettings.json
-appsettings.Development.json
+**/appsettings.json
+**/appsettings.Development.json
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
