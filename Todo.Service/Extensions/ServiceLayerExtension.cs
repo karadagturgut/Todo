@@ -1,4 +1,5 @@
-﻿using AutoMapper.Internal;
+﻿using Amazon.S3;
+using AutoMapper.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,10 @@ namespace Todo.Service
             services.AddAutoMapper(cfg => cfg.Internal().MethodMappingEnabled = false, typeof(MapProfile).Assembly);
             #endregion
 
+
+
             #region Sınflar
+            services.AddSingleton<IAmazonS3, AmazonS3Client>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             var serviceTypes = Assembly.GetExecutingAssembly().GetTypes()
