@@ -1,4 +1,5 @@
 ﻿using Amazon.S3;
+using Amazon;
 using AutoMapper.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -24,8 +25,22 @@ namespace Todo.Service
 
 
             #region Sınflar
-            services.AddSingleton<IAmazonS3, AmazonS3Client>();
+            var awsOptions = new AmazonS3Config
+            {
+                RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))
+            };
+
+            services.AddSingleton<IAmazonS3>(sp =>
+            {
+                return new AmazonS3Client(
+                    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+                    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
+                    awsOptions);
+            });
+
+           
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<FileService>();
 
             var serviceTypes = Assembly.GetExecutingAssembly().GetTypes()
                         .Where(type => type.Name.EndsWith("Service")

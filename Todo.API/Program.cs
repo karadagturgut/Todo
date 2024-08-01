@@ -4,7 +4,7 @@ using Todo.Data;
 using Todo.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-var conStr = Environment.GetEnvironmentVariable("ConnectionString");
+var conStr = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration.GetConnectionString("DefaultConnection"); 
 builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
 builder.Services.RegisterServiceLayer();
 builder.Services.AddMemoryCache();

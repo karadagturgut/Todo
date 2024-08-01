@@ -1,15 +1,10 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Todo.Service
 {
-    public class FileService(IAmazonS3 _s3)
+    public class FileService(IAmazonS3 _s3) 
     {
         private readonly string _bucketName = "tkfilebucket1";
 
