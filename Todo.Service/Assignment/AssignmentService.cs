@@ -9,15 +9,17 @@ namespace Todo.Service
         private readonly IGenericRepository<Assignments> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IGenericRepository<TodoUser> _userRepository;
+        private readonly IGenericRepository<UserBoard> _userBoardRepository;
         private readonly IMapper _mapper;
         private readonly CacheService _cacheService;
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService, IGenericRepository<TodoUser> userRepository)
+        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService, IGenericRepository<TodoUser> userRepository, IGenericRepository<UserBoard> userBoardRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _statusRepository = statusRepository;
             _cacheService = cacheService;
             _userRepository = userRepository;
+            _userBoardRepository = userBoardRepository;
         }
 
         public ApiResponseDTO Add(CreateAssignmentDTO model)
@@ -72,7 +74,8 @@ namespace Todo.Service
             var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
             var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return ApiResponseDTO.Success(JoinedResult(assignment, status, users), "Bu Board'a Ait Tüm İşler:");
+            var userBoards = _userBoardRepository.GetAll()?.Data?.AsNoTracking().ToList();  
+            return ApiResponseDTO.Success(JoinedResult(assignment, status, users,userBoards,(int)model.UserId), "Bu Board'a Ait Tüm İşler:");
         }
 
 
@@ -93,7 +96,8 @@ namespace Todo.Service
             var assignment = _repository.Where(x => x.Status.Equals(model.Status) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
             var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status,users), "Durum Filtresine Göre Sonuçlar:");
+            var userBoards = _userBoardRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return ApiResponseDTO.Success(JoinedResult(assignment, status, users, userBoards, (int)model.UserId), "Bu Board'a Ait Tüm İşler:");
         }
         /// <summary>
         /// 
@@ -112,7 +116,8 @@ namespace Todo.Service
             var assignment = _repository.Where(x => x.Name.Contains(model.Name!) && x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
             var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
             var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            return _cacheService.SetCacheAndGetResponse(cacheKey, JoinedResult(assignment, status,users), "Arama Sonuçları:");
+            var userBoards = _userBoardRepository.GetAll()?.Data?.AsNoTracking().ToList();
+            return ApiResponseDTO.Success(JoinedResult(assignment, status, users, userBoards, (int)model.UserId), "Bu Board'a Ait Tüm İşler:");
         }
 
         public ApiResponseDTO GetAssignmentStatuses()
@@ -142,9 +147,12 @@ namespace Todo.Service
         /// <param name="assignments"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status, List<TodoUser> users)
+        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status, List<TodoUser> users, List<UserBoard> userBoards, int userId)
         {
+            var usersBoard = userBoards.Where(x => x.UserId.Equals(userId)).Select(x => x.BoardId).ToList();
+
             return assignments?
+           .Where(assignment => usersBoard.Contains(assignment.BoardId))
            .Join(status, assignment => assignment.Status, status => status.Id,
                (assignment, status) => new
                {
