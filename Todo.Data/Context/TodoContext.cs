@@ -9,6 +9,15 @@ namespace Todo.Data
 {
     public class TodoContext : IdentityDbContext<TodoUser, TodoRole, int>
     {
+
+        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
+        {
+        }
+        public TodoContext()
+        {
+                
+        }
+
         public virtual DbSet<Assignments> Assigments { get; set; }
         public virtual DbSet<AssignmentStatus> AssignmentStatus { get; set; }
         public virtual DbSet<Boards> Boards { get; set; }
@@ -20,9 +29,6 @@ namespace Todo.Data
         public DbSet<AssignmentComment> AssignmentComments { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
-        {
-        }
-
+        
     }
 }

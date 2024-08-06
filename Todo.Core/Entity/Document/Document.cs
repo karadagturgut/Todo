@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Todo.Core
 {
-    [Table("Boards")]
+    [Table("Documents")]
     public class Document
     {
         [Key]
