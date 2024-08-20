@@ -61,6 +61,7 @@ namespace Todo.API.Controllers
 
             AuthDTO DTO = new()
             {
+                // burada surname hata veriyor. bak.
                 Name = response.Principal.FindFirstValue(ClaimTypes.Name),
                 Surname = response.Principal.FindFirstValue(ClaimTypes.Surname),
                 UserName = response.Principal.FindFirstValue(ClaimTypes.Email),
