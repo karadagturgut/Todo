@@ -6,7 +6,7 @@ using Todo.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Google;
 
-namespace Todo.API.Controllers
+namespace Todo.API.Controllers.Auth
 {
     [Route("[controller]/[action]")]
     [ApiController]
@@ -45,9 +45,9 @@ namespace Todo.API.Controllers
         [Route("/GoogleLogin")]
         public async Task<IActionResult> LoginGoogle()
         {
-            var cookieValue = HttpContext.Request.Cookies[Environment.GetEnvironmentVariable("GLoginSetter")];
+            var response = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (cookieValue == null)
+            if (response.Principal == null)
             {
                 var properties = new AuthenticationProperties
                 {
@@ -55,9 +55,6 @@ namespace Todo.API.Controllers
                 };
                 return Challenge(properties, GoogleDefaults.AuthenticationScheme);
             }
-
-            var response = await HttpContext.AuthenticateAsync(Environment.GetEnvironmentVariable("GLoginSetter"));
-            if (response.Principal == null) { Response.Cookies.Delete(Environment.GetEnvironmentVariable("GLoginSetter")); return RedirectToAction("LoginGoogle"); }
 
             AuthDTO DTO = new()
             {

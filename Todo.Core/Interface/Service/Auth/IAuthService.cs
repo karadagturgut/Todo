@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Todo.Core.DTO.Auth;
 
 namespace Todo.Core
 {
@@ -15,6 +16,8 @@ namespace Todo.Core
         Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model);
         Task<ApiResponseDTO> RegisterExternalService(AuthDTO model);
         Task<ApiResponseDTO> UserProfile(string userId);
-       
+        Task<ApiResponseDTO> AddRole(RoleDTO model);
+        ApiResponseDTO GetAllRoles();
+
     }
 }

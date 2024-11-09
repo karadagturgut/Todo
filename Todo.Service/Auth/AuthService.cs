@@ -1,22 +1,25 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 using Todo.Core;
 
-namespace Todo.Service
+namespace Todo.Service.Auth
 {
-    public class AuthService : IAuthService
+    public partial class AuthService : IAuthService
     {
         private readonly UserManager<TodoUser> _userManager;
         private readonly RoleManager<TodoRole> _roleManager;
         private readonly IGenericRepository<ActionRoles> _actionRoleRepository;
         private readonly IMapper _mapper;
-        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRoles> actionRoleRepository)
+        private readonly EndpointDataSource _endpointDataSource;
+        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRoles> actionRoleRepository, EndpointDataSource endpointDataSource)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _actionRoleRepository = actionRoleRepository;
+            _endpointDataSource = endpointDataSource;
         }
 
 
