@@ -23,10 +23,15 @@ namespace Todo.Service
 
         public ApiResponseDTO AddOrganization(OrganizationDTO model)
         {
+            var isExists = _repository.Where(x => x.Name.Equals(model.Name));
+            if (isExists?.Data?.Count() > 0)
+            {
+                return ApiResponseDTO.Failed("Aynı isimde organizasyon bulunuyor.");
+            }
             var mapped = _mapper.Map<Organization>(model);
             var result = _repository.Add(mapped);
             if (result.IsSuccess) { return ApiResponseDTO.Failed("Kayıt oluşturulurken hata."); }
-            return ApiResponseDTO.Success(null,"Kayıt başarılı.");
+            return ApiResponseDTO.Success(null, "Kayıt başarılı.");
         }
 
         public ApiResponseDTO AllOrganizations()

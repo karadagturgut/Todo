@@ -85,6 +85,7 @@ namespace Todo.Service.Auth
             return ApiResponseDTO.Failed("Kullanıcı adı ya da şifre hatalı.");
         }
 
+        //todo: bo register ayrılabilir mi?
         public async Task<ApiResponseDTO> Register(AuthDTO model)
         {
             List<string> roles = new() { "User" };
