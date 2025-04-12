@@ -10,7 +10,7 @@ namespace Todo.Core
     public interface IAuthService
     {
         ApiResponseDTO Authorize(AuthorizeDTO model);
-        IEnumerable<ActionRoles> GetActionRolesByPath(string path);
+        IEnumerable<ActionRole> GetActionRolesByPath(string path);
         Task<ApiResponseDTO> Login(LoginDTO model);
         Task<ApiResponseDTO> Register(AuthDTO model);
         Task<ApiResponseDTO> ChangePassword(ChangePasswordDTO model);

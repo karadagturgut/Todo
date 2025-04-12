@@ -6,13 +6,13 @@ namespace Todo.Service
 {
     public partial class AssignmentService : IAssignmentService
     {
-        private readonly IGenericRepository<Assignments> _repository;
+        private readonly IGenericRepository<Assignment> _repository;
         private readonly IGenericRepository<AssignmentStatus> _statusRepository;
         private readonly IGenericRepository<TodoUser> _userRepository;
         private readonly IGenericRepository<UserBoard> _userBoardRepository;
         private readonly IMapper _mapper;
         private readonly CacheService _cacheService;
-        public AssignmentService(IGenericRepository<Assignments> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService, IGenericRepository<TodoUser> userRepository, IGenericRepository<UserBoard> userBoardRepository)
+        public AssignmentService(IGenericRepository<Assignment> repository, IMapper mapper, IGenericRepository<AssignmentStatus> statusRepository, CacheService cacheService, IGenericRepository<TodoUser> userRepository, IGenericRepository<UserBoard> userBoardRepository)
         {
             _repository = repository;
             _mapper = mapper;
@@ -24,7 +24,7 @@ namespace Todo.Service
 
         public ApiResponseDTO Add(CreateAssignmentDTO model)
         {
-            var mapped = _mapper.Map<Assignments>(model);
+            var mapped = _mapper.Map<Assignment>(model);
             var result = _repository.Add(mapped);
             if (!result.IsSuccess)
             {
@@ -147,7 +147,7 @@ namespace Todo.Service
         /// <param name="assignments"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private object? JoinedResult(List<Assignments> assignments, List<AssignmentStatus> status, List<TodoUser> users, List<UserBoard> userBoards, int userId)
+        private object? JoinedResult(List<Assignment> assignments, List<AssignmentStatus> status, List<TodoUser> users, List<UserBoard> userBoards, int userId)
         {
             var usersBoard = userBoards.Where(x => x.UserId.Equals(userId)).Select(x => x.BoardId).ToList();
 

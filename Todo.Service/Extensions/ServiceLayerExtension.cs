@@ -24,7 +24,7 @@ namespace Todo.Service
 
 
 
-            #region Sınflar
+            #region Sınıflar
             var awsOptions = new AmazonS3Config
             {
                 RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))

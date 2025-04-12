@@ -10,10 +10,10 @@ namespace Todo.Service.Auth
     {
         private readonly UserManager<TodoUser> _userManager;
         private readonly RoleManager<TodoRole> _roleManager;
-        private readonly IGenericRepository<ActionRoles> _actionRoleRepository;
+        private readonly IGenericRepository<ActionRole> _actionRoleRepository;
         private readonly IMapper _mapper;
         private readonly EndpointDataSource _endpointDataSource;
-        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRoles> actionRoleRepository, EndpointDataSource endpointDataSource)
+        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRole> actionRoleRepository, EndpointDataSource endpointDataSource)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -58,7 +58,7 @@ namespace Todo.Service.Auth
             return ApiResponseDTO.Unauthorized("Erişim Reddedildi: Yetkiniz yok.");
         }
 
-        public IEnumerable<ActionRoles> GetActionRolesByPath(string path)
+        public IEnumerable<ActionRole> GetActionRolesByPath(string path)
         {
             return _actionRoleRepository.Where(ar => ar.Action == path).Data;
         }

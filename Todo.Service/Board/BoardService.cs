@@ -5,11 +5,11 @@ namespace Todo.Service
 {
     public class BoardService : IBoardService
     {
-        private readonly IGenericRepository<Boards> _repository;
+        private readonly IGenericRepository<Board> _repository;
         private readonly IUserBoardService _userBoardService;
         private readonly IMapper _mapper;
 
-        public BoardService(IGenericRepository<Boards> repository, IMapper mapper, IUserBoardService userBoardService)
+        public BoardService(IGenericRepository<Board> repository, IMapper mapper, IUserBoardService userBoardService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -18,7 +18,7 @@ namespace Todo.Service
 
         public ApiResponseDTO Add(CreateBoardDTO model)
         {
-            var mapped = _mapper.Map<Boards>(model);
+            var mapped = _mapper.Map<Board>(model);
             var result = _repository.Add(mapped);
             if (!result.IsSuccess)
             {
@@ -76,7 +76,7 @@ namespace Todo.Service
                 return ApiResponseDTO.Failed("Kullanıcı kayıtlı olduğu board listesi alınamadı.");
             }
 
-            List<Boards> result = new();
+            List<Board> result = new();
 
             if (boardIdList.Data != null)
             {

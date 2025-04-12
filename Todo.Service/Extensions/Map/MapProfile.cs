@@ -10,14 +10,14 @@ namespace Todo.Service.Extensions.Map
         public MapProfile()
         {
             #region Assignments
-            CreateMap<Assignments, CreateAssignmentDTO>().ReverseMap();
-            CreateMap<Assignments, UpdateAssignmentDTO>().ReverseMap()
+            CreateMap<Assignment, CreateAssignmentDTO>().ReverseMap();
+            CreateMap<Assignment, UpdateAssignmentDTO>().ReverseMap()
              .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             #endregion
 
             #region Boards
-            CreateMap<Boards, CreateBoardDTO>().ReverseMap();
-            CreateMap<Boards, UpdateBoardDTO>().ReverseMap()
+            CreateMap<Board, CreateBoardDTO>().ReverseMap();
+            CreateMap<Board, UpdateBoardDTO>().ReverseMap()
              .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             #endregion
 
