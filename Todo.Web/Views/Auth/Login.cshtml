@@ -1,5 +1,8 @@
 ﻿@using Todo.Web.Models.Auth
 @model LoginViewModel
+@{
+    Layout = null;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +35,7 @@
                             <div class="brand-logo">
                                 <img src="../../images/logo.svg" alt="logo">
                             </div>
-                            <h4>Hello! let's get started</h4>
+                            <h4>@Localizer["LoginText"]</h4>
                             <h6 class="font-weight-light">@Localizer["SignInContinue"]</h6>
                             <form class="pt-3" asp-action="Login" method="POST">
                                 <div class="form-group">
@@ -51,10 +54,10 @@
                                             @Localizer["KeepMeSignedIn"]
                                         </label>
                                     </div>
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                    <a href="#" class="auth-link text-black">@Localizer["ForgotPassword?"]</a>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    @Localizer["HaventAccount"] <a href="register.html" class="text-primary">@Localizer["Create"]</a>
+                                    @Localizer["HaventAccount"] <a href="Register" class="text-primary">@Localizer["Create"]</a>
                                 </div>
                             </form>
                         </div>

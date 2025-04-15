@@ -141,6 +141,9 @@
   <data name="LoginAA" xml:space="preserve">
     <value>Giriş yapın.</value>
   </data>
+  <data name="LoginText" xml:space="preserve">
+    <value>Hoşgeldiniz!</value>
+  </data>
   <data name="LoginUpper" xml:space="preserve">
     <value>GİRİŞ</value>
   </data>

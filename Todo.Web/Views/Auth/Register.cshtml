@@ -1,5 +1,8 @@
 ﻿@using Todo.Web.Models.Auth
 @model RegisterViewModel
+@{
+    Layout = null;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +71,7 @@
                                     <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">@Localizer["SignUpUpper"]</button>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    @Localizer["AlreadyAccount"] <a href="login.html" class="text-primary">@Localizer["LoginAA"]</a>
+                                    @Localizer["AlreadyAccount"] <a href="Login" class="text-primary">@Localizer["LoginAA"]</a>
                                 </div>
                             </form>
                         </div>

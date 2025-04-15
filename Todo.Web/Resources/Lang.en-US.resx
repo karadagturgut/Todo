@@ -141,6 +141,9 @@
   <data name="LoginAA" xml:space="preserve">
     <value>Login.</value>
   </data>
+  <data name="LoginText" xml:space="preserve">
+    <value>Hello! let's get started</value>
+  </data>
   <data name="LoginUpper" xml:space="preserve">
     <value>LOGIN</value>
   </data>
