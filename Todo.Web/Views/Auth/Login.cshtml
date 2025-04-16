@@ -11,7 +11,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title>@Localizer["LoginTitle"]</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../vendors/feather/feather.css"> 
     <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
@@ -57,7 +57,7 @@
                                     <a href="#" class="auth-link text-black">@Localizer["ForgotPassword?"]</a>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    @Localizer["HaventAccount"] <a href="Register" class="text-primary">@Localizer["Create"]</a>
+                                    @Localizer["HaventAccount"] <a asp-controller="Auth" asp-action="Register" class="text-primary">@Localizer["Create"]</a>
                                 </div>
                             </form>
                         </div>

@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="404Title" xml:space="preserve">
+    <value>Sayfa bulunamadı :(</value>
+  </data>
+  <data name="500Text" xml:space="preserve">
+    <value>Sunucumuzda bir şeyler hatalı oldu. En kısa sürede düzeltip, geri dönüyoruz.</value>
+  </data>
+  <data name="500Title" xml:space="preserve">
+    <value>Bir şeyler yanlış gitti :(</value>
+  </data>
+  <data name="AllRights" xml:space="preserve">
+    <value>Tüm hakları saklıdır.</value>
+  </data>
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Zaten hesabınız var mı?</value>
   </data>
@@ -132,6 +144,9 @@
   <data name="HaventAccount" xml:space="preserve">
     <value>Hesabınız yok mu?</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Ana sayfaya dön</value>
+  </data>
   <data name="KeepMeSignedIn" xml:space="preserve">
     <value>Beni hatırla</value>
   </data>
@@ -144,6 +159,9 @@
   <data name="LoginText" xml:space="preserve">
     <value>Hoşgeldiniz!</value>
   </data>
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Todo Panel-Giriş</value>
+  </data>
   <data name="LoginUpper" xml:space="preserve">
     <value>GİRİŞ</value>
   </data>
@@ -153,11 +171,17 @@
   <data name="NewHere" xml:space="preserve">
     <value>Yeni misiniz?</value>
   </data>
+  <data name="NotFoundText" xml:space="preserve">
+    <value>Gitmek istediğiniz sayfa bulunamadı.</value>
+  </data>
   <data name="OrgName" xml:space="preserve">
     <value>Organizasyon İsmi</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Şifre</value>
+  </data>
+  <data name="RegisterTitle" xml:space="preserve">
+    <value>Todo Panel - Kayıt</value>
   </data>
   <data name="SignInContinue" xml:space="preserve">
     <value>Devam etmek için giriş yapınız.</value>
@@ -170,6 +194,9 @@
   </data>
   <data name="SignUpUpper" xml:space="preserve">
     <value>KAYIT OL</value>
+  </data>
+  <data name="SORRY!" xml:space="preserve">
+    <value>ÜZGÜNÜZ!</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Soyisim</value>
