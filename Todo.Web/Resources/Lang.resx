@@ -138,6 +138,9 @@
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>
   </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Bir Hata Oluştu</value>
+  </data>
   <data name="ForgotPassword?" xml:space="preserve">
     <value>Şifrenizi mi unuttunuz?</value>
   </data>
@@ -174,6 +177,9 @@
   <data name="NotFoundText" xml:space="preserve">
     <value>Gitmek istediğiniz sayfa bulunamadı.</value>
   </data>
+  <data name="Oops" xml:space="preserve">
+    <value>Üzgünüz!</value>
+  </data>
   <data name="OrgName" xml:space="preserve">
     <value>Organizasyon İsmi</value>
   </data>
@@ -203,6 +209,9 @@
   </data>
   <data name="TermsAndConditions" xml:space="preserve">
     <value>Şartları &amp; Koşulları kabul ediyorum.</value>
+  </data>
+  <data name="UnexpectedErrorText" xml:space="preserve">
+    <value>Beklenmeyen bir hata oluştu.</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Kullanıcı Adı</value>
