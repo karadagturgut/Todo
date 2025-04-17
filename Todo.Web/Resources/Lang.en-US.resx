@@ -126,11 +126,20 @@
   <data name="500Title" xml:space="preserve">
     <value>Bir şeyler yanlış gitti :(</value>
   </data>
+  <data name="AddOrganization" xml:space="preserve">
+    <value>Add Organization</value>
+  </data>
+  <data name="AddOrganizationText" xml:space="preserve">
+    <value>Add organization page</value>
+  </data>
   <data name="AllRights" xml:space="preserve">
     <value>All rights reserved.</value>
   </data>
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Already have an account?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
@@ -174,6 +183,9 @@
   <data name="NotFoundText" xml:space="preserve">
     <value>The page you’re looking for was not found.</value>
   </data>
+  <data name="OrganizationName" xml:space="preserve">
+    <value>Organization Name</value>
+  </data>
   <data name="OrgName" xml:space="preserve">
     <value>Organization Name</value>
   </data>
@@ -197,6 +209,9 @@
   </data>
   <data name="SORRY!" xml:space="preserve">
     <value>SORRY!</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Surname</value>

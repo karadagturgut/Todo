@@ -9,5 +9,6 @@ namespace Todo.Core
     public class CreateBoardDTO
     {
         public string Name { get; set; }
+        public int OrganizationId { get; set; }
     }
 }

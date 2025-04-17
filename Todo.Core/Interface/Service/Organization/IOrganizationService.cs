@@ -13,5 +13,6 @@ namespace Todo.Core
         ApiResponseDTO AddOrganization(OrganizationDTO model);
         ApiResponseDTO DeleteOrganization(DeleteOrganizationDTO model);
         ApiResponseDTO UpdateOrganization(UpdateOrganizationDTO model);
+        ApiResponseDTO GetOrganization(DeleteOrganizationDTO model);
     }
 }
