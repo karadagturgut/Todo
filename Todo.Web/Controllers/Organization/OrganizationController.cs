@@ -8,7 +8,6 @@ using Todo.Web.Models.Organization;
 
 namespace Todo.Web.Controllers.Organization
 {
-    [AllowAnonymous]
     public class OrganizationController : Controller
     {
         private readonly IOrganizationService _service;
