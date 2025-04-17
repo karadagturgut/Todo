@@ -132,6 +132,9 @@
   <data name="AddOrganizationText" xml:space="preserve">
     <value>Add organization page</value>
   </data>
+  <data name="AddRecord" xml:space="preserve">
+    <value>Add Record</value>
+  </data>
   <data name="AllRights" xml:space="preserve">
     <value>All rights reserved.</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="NotFoundText" xml:space="preserve">
     <value>The page you’re looking for was not found.</value>
+  </data>
+  <data name="OrganizationList" xml:space="preserve">
+    <value>Organization List</value>
   </data>
   <data name="OrganizationName" xml:space="preserve">
     <value>Organization Name</value>

@@ -132,6 +132,9 @@
   <data name="AddOrganizationText" xml:space="preserve">
     <value>Organizasyon ekleme ekranı</value>
   </data>
+  <data name="AddRecord" xml:space="preserve">
+    <value>Kayıt Ekle</value>
+  </data>
   <data name="AllRights" xml:space="preserve">
     <value>Tüm hakları saklıdır.</value>
   </data>
@@ -194,6 +197,9 @@
   </data>
   <data name="Oops" xml:space="preserve">
     <value>Üzgünüz!</value>
+  </data>
+  <data name="OrganizationList" xml:space="preserve">
+    <value>Organizasyon Listesi</value>
   </data>
   <data name="OrganizationName" xml:space="preserve">
     <value>Organizasyon Adı</value>

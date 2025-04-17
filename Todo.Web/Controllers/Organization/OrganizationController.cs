@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Core;
 using Todo.Core.DTO;
@@ -8,6 +9,7 @@ using Todo.Web.Models.Organization;
 
 namespace Todo.Web.Controllers.Organization
 {
+    //[AllowAnonymous]
     public class OrganizationController : Controller
     {
         private readonly IOrganizationService _service;
@@ -19,7 +21,6 @@ namespace Todo.Web.Controllers.Organization
 
         public IActionResult Index()
         {
-            var list = _service.AllOrganizations();
             return View();
         }
 
@@ -52,7 +53,7 @@ namespace Todo.Web.Controllers.Organization
             var organizationData = Convert.ChangeType(organization.Data, typeof(Todo.Core.Entity.Organization)) as Todo.Core.Entity.Organization;
 
             EditOrganizationViewModel viewModel = new()
-            {  Id = organizationData.Id, Name= organizationData.Name };
+            { Id = organizationData.Id, Name = organizationData.Name };
 
             return View(viewModel);
         }
@@ -69,16 +70,19 @@ namespace Todo.Web.Controllers.Organization
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        public JsonResult Delete(int id)
         {
-            DeleteOrganizationDTO dto = new() { Id = id};
-            var addService = _service.DeleteOrganization(dto);
-            if (!addService.IsSuccess)
-            {
-                return View();
-            }
-            return RedirectToAction("Index");
+            DeleteOrganizationDTO dto = new() { Id = id };
+            var deleteResult = _service.DeleteOrganization(dto);
+            return Json(deleteResult);
+        }
+
+        [HttpGet]
+        public JsonResult GetAll()
+        {
+            var response = _service.AllOrganizations();
+            return Json(response); 
         }
     }
 }
