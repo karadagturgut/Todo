@@ -126,6 +126,12 @@
   <data name="500Title" xml:space="preserve">
     <value>Bir şeyler yanlış gitti :(</value>
   </data>
+  <data name="AddBoard" xml:space="preserve">
+    <value>Pano Ekle</value>
+  </data>
+  <data name="AddBoardText" xml:space="preserve">
+    <value>Bir organizasyona bağlı pano oluşturma ekranı.</value>
+  </data>
   <data name="AddOrganization" xml:space="preserve">
     <value>Organizasyon Ekle</value>
   </data>
@@ -141,11 +147,23 @@
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Zaten hesabınız var mı?</value>
   </data>
+  <data name="BoardList" xml:space="preserve">
+    <value>Pano Listesi</value>
+  </data>
+  <data name="BoardName" xml:space="preserve">
+    <value>Board Adı</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>İptal</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Oluştur</value>
+  </data>
+  <data name="EditBoard" xml:space="preserve">
+    <value>Pano Düzenle</value>
+  </data>
+  <data name="EditBoardText" xml:space="preserve">
+    <value>Edit board</value>
   </data>
   <data name="EditOrganization" xml:space="preserve">
     <value>Organizasyon Düzenle</value>

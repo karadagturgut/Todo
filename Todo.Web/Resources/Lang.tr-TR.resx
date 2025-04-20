@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddBoard" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddBoardText" xml:space="preserve">
+    <value />
+  </data>
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Zaten hesabınız var mı?</value>
+  </data>
+  <data name="BoardList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BoardName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EditBoard" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EditBoardText" xml:space="preserve">
+    <value />
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>

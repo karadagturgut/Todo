@@ -1,7 +1,7 @@
 ﻿
 document.addEventListener('DOMContentLoaded', () => {
-    const tbody = document.getElementById('organizationTableBody');
-    const url = '/Organization/GetAll';
+    const tbody = document.getElementById('boardTableBody');
+    const url = '/Board/ActiveBoards';
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error(`Sunucu hatası: ${response.status}`);
@@ -9,18 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(json => {
             console.log('API yanıtı:', json);
+            debugger;
             const outerSuccess = json.isSuccess ?? json.IsSuccess;
             const outerMsg = json.message ?? json.Message;
             if (!outerSuccess) {
                 alert(outerMsg || 'Bir hata oluştu.');
                 return;
             }
-            debugger;
+
             const wrapper = json.data;
             if (!wrapper) {
                 alert('Beklenmedik veri formatı: wrapper yok.');
                 return;
             }
+
             const innerSuccess = wrapper.isSuccess ?? wrapper.IsSuccess;
             const innerMsg = wrapper.errorMessage ?? wrapper.Message;
             if (!innerSuccess) {
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+          
             tbody.innerHTML = '';
             list.forEach(item => {
                 const tr = document.createElement('tr');
@@ -54,10 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         })
         .catch(err => {
-            console.error('Organizasyon verisi yüklenemedi:', err);
+            console.error('Pano verisi yüklenemedi:', err);
             alert('Veri yükleme hatası: ' + err.message);
         });
-
 
     tbody.addEventListener('click', e => {
         const btn = e.target.closest('button');
@@ -65,12 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = btn.dataset.id;
 
         if (btn.classList.contains('edit-btn')) {
-            window.location.href = '/Organization/Edit/' + id;
+            window.location.href = '/Board/Edit/' + id;
         }
         else if (btn.classList.contains('delete-btn')) {
             if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
 
-            fetch('/Organization/Delete/' + id, {
+            fetch('/Board/Delete/' + id, {
                 method: 'DELETE'
             })
                 .then(r => {

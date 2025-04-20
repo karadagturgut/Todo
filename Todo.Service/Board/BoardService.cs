@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Todo.Core;
+using Todo.Core.Entity;
 
 namespace Todo.Service
 {
@@ -45,7 +46,7 @@ namespace Todo.Service
                 return ApiResponseDTO.Failed("Aktif board listesi getirilirken hata.");
             }
 
-            return ApiResponseDTO.Success(result.Data, "Aktif Board Listesi:");
+            return ApiResponseDTO.Success(result, "Aktif Board Listesi:");
         }
         public ApiResponseDTO Update(UpdateBoardDTO model)
         {
@@ -101,6 +102,18 @@ namespace Todo.Service
             var result = _repository.Where(x => x.OrganizationId.Equals(model.OrganizationId));
             if (!result.IsSuccess) { return ApiResponseDTO.Failed("Organizasyona ait board listesi getirilirken hata."); }
             return ApiResponseDTO.Success(result, "Organizasyona ait boardlar:");
+        }
+
+        public ApiResponseDTO GetBoard(DeleteBoardDTO model)
+        {
+            var existingRecord = _repository.GetById(model.BoardId);
+            if (!existingRecord.IsSuccess || existingRecord.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }
+
+            var result = _repository.Update(existingRecord.Data);
+            if (!result.IsSuccess)
+                return ApiResponseDTO.Failed("Kayıt güncellenirken hata.");
+
+            return ApiResponseDTO.Success(existingRecord.Data as Board, "Kayıt güncellendi.");
         }
     }
 }

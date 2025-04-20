@@ -15,5 +15,6 @@ namespace Todo.Core
         ApiResponseDTO Delete(DeleteBoardDTO model);
         ApiResponseDTO GetUserBoards(ListedBoardsDTO model);
         ApiResponseDTO GetOrganizationBoards(OrganizationBoardsDTO model);
+        ApiResponseDTO GetBoard(DeleteBoardDTO model);
     }
 }

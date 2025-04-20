@@ -126,6 +126,12 @@
   <data name="500Title" xml:space="preserve">
     <value>Bir şeyler yanlış gitti :(</value>
   </data>
+  <data name="AddBoard" xml:space="preserve">
+    <value>Add Board</value>
+  </data>
+  <data name="AddBoardText" xml:space="preserve">
+    <value>Add a board linked with a organization.</value>
+  </data>
   <data name="AddOrganization" xml:space="preserve">
     <value>Add Organization</value>
   </data>
@@ -141,14 +147,35 @@
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Already have an account?</value>
   </data>
+  <data name="BoardList" xml:space="preserve">
+    <value>Board List</value>
+  </data>
+  <data name="BoardName" xml:space="preserve">
+    <value>Board Name</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="EditBoard" xml:space="preserve">
+    <value>Edit Board</value>
+  </data>
+  <data name="EditBoardText" xml:space="preserve">
+    <value>Edit board.</value>
+  </data>
+  <data name="EditOrganization" xml:space="preserve">
+    <value>Edit Organization</value>
+  </data>
+  <data name="EditOrganizationText" xml:space="preserve">
+    <value>Edit a organization.</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>An error occured</value>
   </data>
   <data name="ForgotPassword?" xml:space="preserve">
     <value>Forgot password?</value>

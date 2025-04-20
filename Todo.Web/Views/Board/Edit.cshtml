@@ -1,0 +1,73 @@
+﻿@using Todo.Web.Models.Board
+@model AddBoardViewModel
+
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>@Localizer["AddBoard"]</title>
+	<!-- plugins:css -->
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/vendors/select2/select2.min.js"></script>
+	<link rel="stylesheet" href="~/vendors/select2/select2.min.css">
+
+
+
+	<link rel="stylesheet" href="../../vendors/feather/feather.css">
+	<link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+	<link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+	<!-- endinject -->
+	<!-- Plugin css for this page -->
+	<!-- End plugin css for this page -->
+	<!-- inject:css -->
+	<link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+	<!-- endinject -->
+	<link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<div class="col-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h4 class="card-title">@Localizer["EditBoard"]</h4>
+			<p class="card-description">
+				@Localizer["EditBoardText"]
+			</p>
+			<form class="forms-sample" asp-action="Add" method="POST">
+				<div class="form-group">
+					<label for="exampleInputName1">@Localizer["BoardName"]</label>
+					<input type="text" class="form-control" asp-for="Name" placeholder="@Localizer["BoardName"]" required>
+				</div>
+				<div class="form-group">
+					<label for="OrganizationId">@Localizer["OrganizationName"]</label>
+					<select id="organizationSelect" name="OrganizationId" class="js-org-select form-control" style="width: 100%"></select>
+				</div>
+				@*                 <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="img[]" class="file-upload-default">
+                    <div class="input-group col-xs-12">
+                        <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+                        <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                    </div>
+                </div> *@
+				@*             <div class="form-group">
+                    <label for="exampleInputCity1">City</label>
+                    <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Textarea</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                </div> *@
+				<button type="submit" class="btn btn-primary mr-2">@Localizer["Submit"]</button>
+				<button class="btn btn-light">@Localizer["Cancel"]</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+{
+	<script src="~/pages/boards/js/add.js"></script>
+}
