@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Todo.Service\Todo.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>

@@ -15,6 +15,8 @@ namespace Todo.Web.Controllers.Assignment
 
         public IActionResult Index()
         {
+            // 1. sırasıyla organization board servislerinden seçim yapılacak
+            // 2. sonrasında buradaki liste dolacak.
             return View();
         }
 
@@ -29,5 +31,13 @@ namespace Todo.Web.Controllers.Assignment
         {
             return View();
         }
+
+        #region
+        public JsonResult AssignmentList(int? boardId)
+        {
+            var assignments = _service.FilterByBoardId(new() { BoardId = boardId });
+            return Json(assignments);
+        }
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Core;
+using Todo.Core.DTO;
 using Todo.Core.Entity;
 using Todo.Web.Models.Board;
 using Todo.Web.Models.Organization;
@@ -61,7 +62,7 @@ namespace Todo.Web.Controllers.Board
         [HttpPost]
         public IActionResult Edit(AddBoardViewModel model)
         {
-            UpdateBoardDTO dto = new() { Name = model.Name};
+            UpdateBoardDTO dto = new() { Name = model.Name };
             var addService = _service.Update(dto);
             if (!addService.IsSuccess)
             {
@@ -70,11 +71,26 @@ namespace Todo.Web.Controllers.Board
             return RedirectToAction("Index");
         }
 
+        [HttpDelete]
+        public JsonResult Delete(int id)
+        {
+            DeleteBoardDTO dto = new() { BoardId = id };
+            var deleteResult = _service.Delete(dto);
+            return Json(deleteResult);
+        }
+
+
         #region json result
 
         public JsonResult ActiveBoards()
         {
             var boardsList = _service.GetActiveBoards();
+            return Json(boardsList);
+        }
+
+        public JsonResult OrganizationsBoards(int id)
+        {
+            var boardsList = _service.GetOrganizationBoards(new(id));
             return Json(boardsList);
         }
 

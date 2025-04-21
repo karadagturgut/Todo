@@ -126,6 +126,9 @@
   <data name="500Title" xml:space="preserve">
     <value>Bir şeyler yanlış gitti :(</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="AddBoard" xml:space="preserve">
     <value>Add Board</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="AlreadyAccount" xml:space="preserve">
     <value>Already have an account?</value>
+  </data>
+  <data name="AssignmentList" xml:space="preserve">
+    <value>Task List</value>
   </data>
   <data name="BoardList" xml:space="preserve">
     <value>Board List</value>
@@ -212,6 +218,9 @@
   </data>
   <data name="NotFoundText" xml:space="preserve">
     <value>The page you’re looking for was not found.</value>
+  </data>
+  <data name="Oops" xml:space="preserve">
+    <value>Sorry!</value>
   </data>
   <data name="OrganizationList" xml:space="preserve">
     <value>Organization List</value>
