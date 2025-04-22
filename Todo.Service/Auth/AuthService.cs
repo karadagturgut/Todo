@@ -85,6 +85,27 @@ namespace Todo.Service.Auth
             return ApiResponseDTO.Failed("Kullanıcı adı ya da şifre hatalı.");
         }
 
+        public async Task<ApiResponseDTO> BackOfficeLogin(LoginDTO model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+                var userInfo = new UserInfoDTO()
+                {
+                    UserId = user.Id.ToString(),
+                    UserName = user.UserName,
+                    EMail = user.Email,
+                    Role = role ?? "User"
+                };
+
+                return ApiResponseDTO.Success(userInfo, null);
+            }
+
+            return ApiResponseDTO.Failed("Kullanıcı adı ya da şifre hatalı.");
+        }
+
         //todo: bo register ayrılabilir mi?
         public async Task<ApiResponseDTO> Register(AuthDTO model)
         {

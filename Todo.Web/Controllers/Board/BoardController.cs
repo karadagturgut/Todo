@@ -8,7 +8,7 @@ using Todo.Web.Models.Organization;
 
 namespace Todo.Web.Controllers.Board
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "User,Admin,SuperAdmin")]
     public class BoardController : Controller
     {
         private readonly IBoardService _service;
@@ -17,6 +17,20 @@ namespace Todo.Web.Controllers.Board
         {
             _service = service;
         }
+
+
+        [AllowAnonymous] // Herkes erişebilsin diye geçici olarak ekledik
+        public IActionResult DebugClaims()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Content("Giriş yapılmamış.");
+            }
+
+            var claims = User.Claims.Select(c => $"{c.Type} => {c.Value}");
+            return Content(string.Join("\n", claims));
+        }
+
 
         [HttpGet]
         public IActionResult Index()

@@ -18,6 +18,7 @@ namespace Todo.Core
         Task<ApiResponseDTO> UserProfile(string userId);
         Task<ApiResponseDTO> AddRole(RoleDTO model);
         ApiResponseDTO GetAllRoles();
+        Task<ApiResponseDTO> BackOfficeLogin(LoginDTO model);
 
     }
 }

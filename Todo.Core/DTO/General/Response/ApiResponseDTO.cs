@@ -36,6 +36,6 @@ namespace Todo.Core
         {
             return new ApiResponseDTO { Data = null, Message = message, IsSuccess = false, StatusCode = 500 };
         }
-
+        
     }
 }

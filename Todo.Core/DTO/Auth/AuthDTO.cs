@@ -29,4 +29,12 @@ namespace Todo.Core
         public string Role { get; set; }
     }
 
+    public class UserInfoDTO
+    {
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string EMail { get; set; }
+        public string Role { get; set; }
+    }
+
 }
