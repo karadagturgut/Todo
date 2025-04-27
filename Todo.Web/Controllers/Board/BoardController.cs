@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Todo.Core;
 using Todo.Core.DTO;
 using Todo.Core.Entity;
@@ -8,7 +12,7 @@ using Todo.Web.Models.Organization;
 
 namespace Todo.Web.Controllers.Board
 {
-    [Authorize(Roles = "User,Admin,SuperAdmin")]
+    [Authorize]
     public class BoardController : Controller
     {
         private readonly IBoardService _service;
@@ -17,20 +21,6 @@ namespace Todo.Web.Controllers.Board
         {
             _service = service;
         }
-
-
-        [AllowAnonymous] // Herkes erişebilsin diye geçici olarak ekledik
-        public IActionResult DebugClaims()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Content("Giriş yapılmamış.");
-            }
-
-            var claims = User.Claims.Select(c => $"{c.Type} => {c.Value}");
-            return Content(string.Join("\n", claims));
-        }
-
 
         [HttpGet]
         public IActionResult Index()

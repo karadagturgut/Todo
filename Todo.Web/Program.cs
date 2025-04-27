@@ -1,10 +1,13 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+ï»¿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Globalization;
+using Todo.Core;
 using Todo.Data;
 using Todo.Service;
 
@@ -27,58 +30,63 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 
-var conStr = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration.GetConnectionString("SQL");
-builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
+var conStr = Environment.GetEnvironmentVariable("ConnectionString")
+              ?? builder.Configuration.GetConnectionString("SQL");
+
+builder.Services.AddDbContext<TodoContext>(options =>
+    options.UseSqlServer(conStr));
+
+
+
+
 builder.Services.RegisterServiceLayer();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.Cookie.Name = "Todo.BO.Auth";
+});
+
 builder.Services.AddMemoryCache();
 
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
-        {
-            options.LoginPath = "/Auth/Login";
-            options.AccessDeniedPath = "/Auth/AccessDenied";
-            options.Cookie.Name = "Todo.BO.Auth";
 
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.None; // HTTP için
-            options.Cookie.SameSite = SameSiteMode.Lax;
-            options.ExpireTimeSpan = TimeSpan.FromDays(7);
-            options.SlidingExpiration = true;
-        });
-
-// Add services to the container.
 builder.Services.AddControllersWithViews(options =>
 {
     var policy = new AuthorizationPolicyBuilder()
-                     .RequireAuthenticatedUser()
-                     .Build();
+        .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+
     options.Filters.Add(new AuthorizeFilter(policy));
 });
-
 
 var app = builder.Build();
 
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(locOptions);
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-    app.UseStatusCodePagesWithReExecute("/Error/{0}");
 }
-
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

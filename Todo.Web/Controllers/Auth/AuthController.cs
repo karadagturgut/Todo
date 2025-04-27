@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Todo.Core;
 using Todo.Core.DTO;
 using Todo.Web.Models.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace Todo.Web.Controllers.Auth
 {
@@ -30,33 +31,19 @@ namespace Todo.Web.Controllers.Auth
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            LoginDTO request = new(model.UserName, model.Password);
-            var result = await _authService.BackOfficeLogin(request);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (!result.IsSuccess || result.Data == null)
+            var result = await _authService.BackOfficeLogin(new LoginDTO(model.UserName, model.Password));
+
+            if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, result.Message ?? "Giriş başarısız.");
                 return View(model);
             }
 
-            dynamic userData = result.Data as UserInfoDTO;
-
-            var claims = new List<Claim>
-            {
-            new Claim(ClaimTypes.NameIdentifier, userData.UserId),
-            new Claim(ClaimTypes.Name, userData.UserName),
-            new Claim(ClaimTypes.Email, userData.EMail),
-            new Claim(ClaimTypes.Role, userData.Role)
-            };
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
             return RedirectToAction("Index", "Board");
         }
-
 
         public IActionResult Register()
         {
@@ -90,6 +77,16 @@ namespace Todo.Web.Controllers.Auth
 
 
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            TempData["LogoutMessage"] = "Başarıyla çıkış yaptınız.";
+            return RedirectToAction("Login", "Auth");
         }
 
     }

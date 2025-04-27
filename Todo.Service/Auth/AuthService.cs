@@ -13,13 +13,15 @@ namespace Todo.Service.Auth
         private readonly IGenericRepository<ActionRole> _actionRoleRepository;
         private readonly IMapper _mapper;
         private readonly EndpointDataSource _endpointDataSource;
-        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRole> actionRoleRepository, EndpointDataSource endpointDataSource)
+        private readonly SignInManager<TodoUser> _signInManager;
+        public AuthService(UserManager<TodoUser> userManager, RoleManager<TodoRole> roleManager, IMapper mapper, IGenericRepository<ActionRole> actionRoleRepository, EndpointDataSource endpointDataSource, SignInManager<TodoUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _actionRoleRepository = actionRoleRepository;
             _endpointDataSource = endpointDataSource;
+            _signInManager = signInManager;
         }
 
 
@@ -88,19 +90,12 @@ namespace Todo.Service.Auth
         public async Task<ApiResponseDTO> BackOfficeLogin(LoginDTO model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
+
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                await _signInManager.SignInAsync(user, isPersistent: true); 
 
-                var userInfo = new UserInfoDTO()
-                {
-                    UserId = user.Id.ToString(),
-                    UserName = user.UserName,
-                    EMail = user.Email,
-                    Role = role ?? "User"
-                };
-
-                return ApiResponseDTO.Success(userInfo, null);
+                return ApiResponseDTO.Success(null, "Login başarılı");
             }
 
             return ApiResponseDTO.Failed("Kullanıcı adı ya da şifre hatalı.");

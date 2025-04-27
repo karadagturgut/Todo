@@ -10,6 +10,9 @@ using System.Text;
 using Todo.Core;
 using Todo.Data;
 using Todo.Service.Extensions.Map;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Todo.Service
 {
@@ -59,36 +62,42 @@ namespace Todo.Service
             services.AddScoped<CacheService>();
             #endregion
 
+
+            #region Identity
+
+            services.AddIdentity<TodoUser, TodoRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddEntityFrameworkStores<TodoContext>()
+            .AddDefaultTokenProviders();
+
+            #endregion
+
+
             #region JWT
 
-            services.AddIdentity<TodoUser, TodoRole>()
-           .AddEntityFrameworkStores<TodoContext>()
-           .AddDefaultTokenProviders();
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = true;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
+                        ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
+                    };
+                }).AddGoogle(google =>
+                {
+                    google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+                    google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
+                });
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-   .AddJwtBearer(options =>
-   {
-       options.RequireHttpsMetadata = true;
-       options.SaveToken = true;
-       options.TokenValidationParameters = new TokenValidationParameters
-       {
-           ValidateIssuer = true,
-           ValidateAudience = true,
-           ValidateLifetime = true,
-           ValidateIssuerSigningKey = true,
-           ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
-           ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
-           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
-       };
-   }).AddGoogle(google =>
-           {
-               google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
-               google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
-           });
             #endregion
 
             return services;
