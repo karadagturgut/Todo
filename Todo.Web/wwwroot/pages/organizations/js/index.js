@@ -1,84 +1,93 @@
-﻿
-document.addEventListener('DOMContentLoaded', () => {
-    const tbody = document.getElementById('organizationTableBody');
-    const url = '/Organization/GetAll';
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error(`Sunucu hatası: ${response.status}`);
-            return response.json();
-        })
-        .then(json => {
-            console.log('API yanıtı:', json);
-            const outerSuccess = json.isSuccess ?? json.IsSuccess;
-            const outerMsg = json.message ?? json.Message;
-            if (!outerSuccess) {
-                alert(outerMsg || 'Bir hata oluştu.');
-                return;
+﻿$(document).ready(function () {
+    $('#organizationTable').DataTable({
+        ajax: {
+            url: '/Organization/GetAll',
+            type: 'GET',
+            dataSrc: function (json) {
+                const outerSuccess = json.isSuccess ?? json.IsSuccess;
+                const wrapper = json.data;
+                if (!outerSuccess || !wrapper || !wrapper.isSuccess) {
+                    toastr.error('Board verisi yüklenemedi.');
+                    return [];
+                }
+                return wrapper.data || [];
             }
-            debugger;
-            const wrapper = json.data;
-            if (!wrapper) {
-                alert('Beklenmedik veri formatı: wrapper yok.');
-                return;
+        },
+        columns: [
+            { data: 'name' },
+            //{
+            //    data: 'status',
+            //    render: function (data) {
+            //        return data
+            //            ? '<span class="badge badge-success">Aktif</span>'
+            //            : '<span class="badge badge-danger">Pasif</span>';
+            //    }
+            //},
+            //{
+            //    data: 'organizationId',
+            //    render: function (data) {
+            //        return data > 0 ? data : '-';
+            //    }
+            //},
+            {
+                data: 'id',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${data}">
+                            <i class="ti-pencil"></i> Düzenle
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${data}">
+                            <i class="ti-trash"></i> Sil
+                        </button>
+                    `;
+                }
             }
-            const innerSuccess = wrapper.isSuccess ?? wrapper.IsSuccess;
-            const innerMsg = wrapper.errorMessage ?? wrapper.Message;
-            if (!innerSuccess) {
-                alert(innerMsg || 'Bir hata oluştu (inner).');
-                return;
-            }
+        ],
+        responsive: true,
+        pageLength: 10,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+        },
+        dom: '<"d-flex justify-content-between align-items-center mb-3"lf>tip',
+    });
 
-            const list = wrapper.data;
-            if (!Array.isArray(list)) {
-                console.error('Beklenen dizi, gelen:', list);
-                alert('Beklenmedik veri formatı: dizi bekleniyordu.');
-                return;
-            }
+    $('#boardTable tbody').on('click', '.edit-btn', function () {
+        const id = $(this).data('id');
+        window.location.href = '/Board/Edit/' + id;
+    });
 
-            tbody.innerHTML = '';
-            list.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-    <td>${item.name}</td>
-    <td>
-        <button class="btn btn-sm btn-primary edit-btn" data-id="${item.id}">
-            Düzenle
-        </button>
-        <button class="btn btn-sm btn-danger delete-btn" data-id="${item.id}">
-            Sil
-        </button>
-    </td>
-    <td></td>
-    `;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(err => {
-            console.error('Organizasyon verisi yüklenemedi:', err);
-            alert('Veri yükleme hatası: ' + err.message);
-        });
+    $('#boardTable tbody').on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
 
-
-    tbody.addEventListener('click', e => {
-        const btn = e.target.closest('button');
-        if (!btn) return;
-        const id = btn.dataset.id;
-
-        if (btn.classList.contains('edit-btn')) {
-            window.location.href = '/Organization/Edit/' + id;
-        }
-        else if (btn.classList.contains('delete-btn')) {
-            if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
-
-            fetch('/Organization/Delete/' + id, {
-                method: 'DELETE'
-            })
-                .then(r => {
-                    if (!r.ok) throw new Error('Silme işlemi başarısız.');
-                    return r.json();
+        Swal.fire({
+            title: 'Silmek istediğinize emin misiniz?',
+            text: "Bu işlem geri alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, sil!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/Organization/Delete/' + id, {
+                    method: 'DELETE'
                 })
-                .then(() => window.location.reload())
-                .catch(delErr => alert('Silme hatası: ' + delErr.message));
-        }
+                    .then(r => {
+                        if (!r.ok) throw new Error('Silme işlemi başarısız.');
+                        return r.json();
+                    })
+                    .then(() => {
+                        toastr.success('Kayıt başarıyla silindi.');
+                        $('#boardTable').DataTable().ajax.reload();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        toastr.error('Silme hatası: ' + err.message);
+                    });
+            }
+        });
     });
 });
