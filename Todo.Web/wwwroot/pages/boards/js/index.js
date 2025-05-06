@@ -15,18 +15,19 @@
         },
         columns: [
             { data: 'name' },
+
+            {
+                data: 'organizationId',
+                render: function (data) {
+                    return data > 0 ? data : '-';
+                }
+            },
             {
                 data: 'status',
                 render: function (data) {
                     return data
                         ? '<span class="badge badge-success">Aktif</span>'
                         : '<span class="badge badge-danger">Pasif</span>';
-                }
-            },
-            {
-                data: 'organizationId',
-                render: function (data) {
-                    return data > 0 ? data : '-';
                 }
             },
             {

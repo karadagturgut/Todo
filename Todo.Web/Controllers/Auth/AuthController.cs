@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Todo.Web.Controllers.Auth
 {
-    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
@@ -22,12 +21,13 @@ namespace Todo.Web.Controllers.Auth
             _organizationService = organizationService;
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -45,10 +45,13 @@ namespace Todo.Web.Controllers.Auth
             return RedirectToAction("Index", "Board");
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
