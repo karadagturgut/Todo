@@ -22,7 +22,38 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Todo.Web.styles.css" asp-append-version="true" />
 
-    <title>Todo.Web</title>
+
+    <style>
+        .toast {
+            background-color: rgba(51, 51, 51, 0.9) !important;
+            color: #fff !important;
+            opacity: 1 !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .toast-title,
+        .toast-message {
+            color: #fff !important;
+        }
+
+        .toast-success {
+            background-color: #51A351 !important;
+        }
+
+        .toast-error {
+            background-color: #BD362F !important;
+        }
+
+        .toast-info {
+            background-color: #2F96B4 !important;
+        }
+
+        .toast-warning {
+            background-color: #F89406 !important;
+        }
+    </style>
+
 </head>
 <body>
     <header>

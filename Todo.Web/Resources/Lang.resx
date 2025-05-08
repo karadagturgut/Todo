@@ -264,6 +264,9 @@
   <data name="Submit" xml:space="preserve">
     <value>Kaydet</value>
   </data>
+  <data name="SuccessTitle" xml:space="preserve">
+    <value>Başarılı</value>
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Soyisim</value>
   </data>

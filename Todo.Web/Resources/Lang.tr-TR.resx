@@ -189,6 +189,9 @@
   <data name="SignUpUpper" xml:space="preserve">
     <value>KAYIT OL</value>
   </data>
+  <data name="SuccessTitle" xml:space="preserve">
+    <value />
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Soyisim</value>
   </data>
