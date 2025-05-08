@@ -7,18 +7,22 @@ using Todo.Core;
 using Todo.Core.DTO;
 using Todo.Web.Models.Auth;
 using Microsoft.AspNetCore.Identity;
+using Todo.Web.Controllers.Base;
+using Microsoft.Extensions.Localization;
+using NToastNotify;
 
 namespace Todo.Web.Controllers.Auth
 {
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
         private readonly IOrganizationService _organizationService;
-
-        public AuthController(IAuthService authService, IOrganizationService organizationService)
+        private readonly IStringLocalizer<Lang> _localizer;
+        public AuthController(IAuthService authService, IOrganizationService organizationService, IToastNotification notification, IStringLocalizer<Lang> localizer) : base(localizer, notification)
         {
             _authService = authService;
             _organizationService = organizationService;
+            _localizer = localizer;
         }
 
         [AllowAnonymous]
@@ -41,6 +45,8 @@ namespace Todo.Web.Controllers.Auth
                 ModelState.AddModelError(string.Empty, result.Message ?? "Giriş başarısız.");
                 return View(model);
             }
+
+            UISuccess(_localizer["LoginSuccess"].Value);
 
             return RedirectToAction("Index", "Board");
         }

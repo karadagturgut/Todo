@@ -144,6 +144,9 @@
   <data name="AddRecord" xml:space="preserve">
     <value>Add Record</value>
   </data>
+  <data name="AlertTitle" xml:space="preserve">
+    <value>Alert!</value>
+  </data>
   <data name="AllRights" xml:space="preserve">
     <value>All rights reserved.</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="HomePage" xml:space="preserve">
     <value>Back to home</value>
   </data>
+  <data name="InfoTitle" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="KeepMeSignedIn" xml:space="preserve">
     <value>Keep me signed in</value>
   </data>
@@ -200,6 +206,9 @@
   </data>
   <data name="LoginAA" xml:space="preserve">
     <value>Login.</value>
+  </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>Login Successful!</value>
   </data>
   <data name="LoginText" xml:space="preserve">
     <value>Hello! let's get started</value>
@@ -261,7 +270,13 @@
   <data name="TermsAndConditions" xml:space="preserve">
     <value>I agree to all Terms &amp; Conditions</value>
   </data>
+  <data name="UnexpectedErrorText" xml:space="preserve">
+    <value>Unexpected error occurred</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Warning!</value>
   </data>
 </root>

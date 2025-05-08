@@ -144,6 +144,9 @@
   <data name="AddRecord" xml:space="preserve">
     <value>Kayıt Ekle</value>
   </data>
+  <data name="AlertTitle" xml:space="preserve">
+    <value>Uyarı!</value>
+  </data>
   <data name="AllRights" xml:space="preserve">
     <value>Tüm hakları saklıdır.</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="HomePage" xml:space="preserve">
     <value>Ana sayfaya dön</value>
   </data>
+  <data name="InfoTitle" xml:space="preserve">
+    <value>Bilgi</value>
+  </data>
   <data name="KeepMeSignedIn" xml:space="preserve">
     <value>Beni hatırla</value>
   </data>
@@ -200,6 +206,9 @@
   </data>
   <data name="LoginAA" xml:space="preserve">
     <value>Giriş yapın.</value>
+  </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>Giriş başarılı!</value>
   </data>
   <data name="LoginText" xml:space="preserve">
     <value>Hoşgeldiniz!</value>
@@ -266,5 +275,8 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Kullanıcı Adı</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Uyarı!</value>
   </data>
 </root>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NToastNotify;
 using System.Globalization;
 using Todo.Core;
 using Todo.Data;
@@ -65,7 +66,14 @@ builder.Services.AddControllersWithViews(options =>
         .Build();
 
     options.Filters.Add(new AuthorizeFilter(policy));
-});
+})
+    .AddNToastNotifyToastr(new ToastrOptions
+    {
+        ProgressBar = true,
+        PositionClass = ToastPositions.TopRight,
+        CloseButton = true,
+        TimeOut = 5000
+    });
 
 var app = builder.Build();
 

@@ -15,4 +15,8 @@
     <Folder Include="wwwroot\pages\auths\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NToastNotify" Version="8.0.0" />
+  </ItemGroup>
+
 </Project>
