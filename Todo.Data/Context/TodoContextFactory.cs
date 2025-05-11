@@ -11,7 +11,6 @@ namespace Todo.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<TodoContext>();
 
-            // Configuration'ı yükle
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")

@@ -9,7 +9,7 @@ namespace Todo.Core
 {
     public interface IAuthService
     {
-        ApiResponseDTO Authorize(AuthorizeDTO model);
+        Task<ApiResponseDTO> Authorize(AuthorizeDTO model);
         IEnumerable<ActionRole> GetActionRolesByPath(string path);
         Task<ApiResponseDTO> Login(LoginDTO model);
         Task<ApiResponseDTO> Register(AuthDTO model);

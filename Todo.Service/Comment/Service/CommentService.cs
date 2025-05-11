@@ -34,7 +34,7 @@ namespace Todo.Service
 
         public ApiResponseDTO GetByAssignmentId(int taskId)
         {
-            var result = _assignmentComments.Where(x => x.TaskId.Equals(taskId));
+            var result = _assignmentComments.Where(x => x.AssignmentId.Equals(taskId));
             if (!result.IsSuccess) { return ApiResponseDTO.Failed("Yorumlar alınırken hata oluştu."); }
             return ApiResponseDTO.Success(result,null);
         }

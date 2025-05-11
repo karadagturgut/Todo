@@ -29,10 +29,8 @@ namespace Todo.Service
             return new AssignmentComment
             {
                 Id = dto.Id,
-                TaskId = dto.TaskId,
-                CommentText = dto.CommentText,
-                CreatedDate = createdDate,
-                UpdateDate = updateDate
+                AssignmentId = dto.TaskId,
+                CommentText = dto.CommentText
             };
         }
     }

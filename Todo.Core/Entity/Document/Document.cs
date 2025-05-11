@@ -5,18 +5,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Todo.Core.Entity.Base;
 
 namespace Todo.Core
 {
-    [Table("Documents")]
-    public class Document
+    public class Document : MultiTenantEntity
     {
-        [Key]
-        public int Id { get; set; }
         public Guid FileId { get; set; }
-        public int OrganizationId { get; set; }
+
         public int BoardId { get; set; }
+        public virtual Board Board { get; set; }
+
         public int UploadUserId { get; set; }
-        public DateTime CreatedTime { get; set; }
+        public virtual TodoUser UploadUser { get; set; }
+
+        /// Eğer bu alan doluysa, döküman sadece ilgili göreve (Assignment) özeldir.
+        /// Boşsa, board seviyesinde genel dokümandır.
+        public int? AssignmentId { get; set; }
+        public virtual Assignment Assignment { get; set; }
+
+        public string? FileName { get; set; }
+        public string? ContentType { get; set; }
+        public long? SizeKb { get; set; }
     }
 }

@@ -30,11 +30,6 @@ namespace Todo.Service.Extensions.Map
             CreateMap<UsersBoardDTO, UserBoard>().ReverseMap();
             #endregion
 
-            #region Lesson
-            CreateMap<AddLessonDTO, Lesson>().ReverseMap();
-            CreateMap<UpdateLessonDTO, Lesson>().ReverseMap();
-            #endregion
-
             #region Organization
             CreateMap<OrganizationDTO,Organization>().ReverseMap();
             #endregion

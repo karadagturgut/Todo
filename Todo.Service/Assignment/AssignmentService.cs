@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Todo.Core;
+using Todo.Core.DTO.Assignment;
 
 namespace Todo.Service
 {
@@ -68,16 +69,35 @@ namespace Todo.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+
         public ApiResponseDTO FilterByBoardId(FilterAssignmentDTO model)
         {
+            var assignments = _repository
+                 .WhereQueryable(x => x.BoardId == model.BoardId)
+                 .Include(x => x.Status)
+                  .Include(x => x.AssignedUsers)
+                  .ThenInclude(au => au.User)
+        .AsNoTracking()
+                .Select(x => new AssignmentDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    BoardId = x.BoardId,
+                    StatusName = x.Status.Name,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Assignees = x.AssignedUsers.Select(au => new AssigneeDto
+                    {
+                        UserId = au.UserId,
+                        UserName = au.User.UserName,
+                        IsOwner = au.IsOwner
+                    }).ToList()
+                })
+                .ToList();
 
-            var assignment = _repository.Where(x => x.BoardId.Equals(model.BoardId)).Data?.AsNoTracking().ToList();
-            var status = _statusRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            var users = _userRepository.GetAll()?.Data?.AsNoTracking().ToList();
-            var userBoards = _userBoardRepository.GetAll()?.Data?.AsNoTracking().ToList();  
-            return ApiResponseDTO.Success(JoinedResult(assignment, status, users,userBoards,(int)model.UserId), "Bu Board'a Ait Tüm İşler:");
+            return ApiResponseDTO.Success(assignments, "Bu Board'a Ait Tüm İşler:");
         }
-
 
         /// <summary>
         /// Bir board'da bulunan işleri, iş durumuna göre filtreler.
@@ -149,35 +169,35 @@ namespace Todo.Service
         /// <returns></returns>
         private object? JoinedResult(List<Assignment> assignments, List<AssignmentStatus> status, List<TodoUser> users, List<UserBoard> userBoards, int userId)
         {
-            var usersBoard = userBoards.Where(x => x.UserId.Equals(userId)).Select(x => x.BoardId).ToList();
+            return userBoards.Where(x => x.UserId.Equals(userId)).Select(x => x.BoardId).ToList();
 
-            return assignments?
-           .Where(assignment => usersBoard.Contains(assignment.BoardId))
-           .Join(status, assignment => assignment.Status, status => status.Id,
-               (assignment, status) => new
-               {
-                   Id = assignment.Id,
-                   Name = assignment.Name,
-                   Description = assignment.Description,
-                   BoardId = assignment.BoardId,
-                   Status = status.Name,
-                   Assignee = assignment.Assignee,
-                   StartDate = assignment.StartDate,
-                   EndDate = assignment.EndDate
-               })
-           .Join(users, assignmentStatus => assignmentStatus.Assignee, user => user.Id,
-               (assignmentStatus, user) => new
-               {
-                   Id = assignmentStatus.Id,
-                   Name = assignmentStatus.Name,
-                   Description = assignmentStatus.Description,
-                   BoardId = assignmentStatus.BoardId,
-                   Status = assignmentStatus.Status,
-                   AssigneeName = user.UserName,
-                   StartDate = assignmentStatus.StartDate,
-                   EndDate = assignmentStatus.EndDate
-               })
-           .ToList();
+            // return assignments?
+            //.Where(assignment => usersBoard.Contains(assignment.BoardId))
+            //.Join(status, assignment => assignment.Status, status => status.Id,
+            //    (assignment, status) => new
+            //    {
+            //        Id = assignment.Id,
+            //        Name = assignment.Name,
+            //        Description = assignment.Description,
+            //        BoardId = assignment.BoardId,
+            //        Status = status.Name,
+            //        Assignee = assignment.Assignee,
+            //        StartDate = assignment.StartDate,
+            //        EndDate = assignment.EndDate
+            //    })
+            //.Join(users, assignmentStatus => assignmentStatus.Assignee, user => user.Id,
+            //    (assignmentStatus, user) => new
+            //    {
+            //        Id = assignmentStatus.Id,
+            //        Name = assignmentStatus.Name,
+            //        Description = assignmentStatus.Description,
+            //        BoardId = assignmentStatus.BoardId,
+            //        Status = assignmentStatus.Status,
+            //        AssigneeName = user.UserName,
+            //        StartDate = assignmentStatus.StartDate,
+            //        EndDate = assignmentStatus.EndDate
+            //    })
+            //.ToList();
         }
 
         #endregion

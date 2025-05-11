@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Todo.Core
 {
-    [Table("AssignmentStatus")]
     public class AssignmentStatus
     {
         [Key]

@@ -25,28 +25,33 @@ public class RoleAuthorizationMiddleware
 
             var path = context.Request.Path.Value;
 
-            // Public endpoint kontrolü
+            #region public endpoint kontrolü
             var actionRoleEntries = authService.GetActionRolesByPath(path);
             if (actionRoleEntries.Any(ar => ar.IsPublic))
             {
                 await _next(context);
                 return;
             }
+            #endregion
 
-            // Kullanıcı kimlik doğrulama kontrolü
+            #region kullanıcı login oldu mu?
+
             if (!context.User.Identity.IsAuthenticated)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsync("Kimlik doğrulaması yapılmamış.");
                 return;
             }
+            #endregion
 
+            #region kullanıcı yetkili mi?
             var userRoles = context.User.Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value).FirstOrDefault();
-                
+        .Where(c => c.Type == ClaimTypes.Role)
+        .Select(c => c.Value)
+        .ToList();
 
-            var isAuthorized = authService.Authorize(new() { Path = path , Role = userRoles });
+
+            var isAuthorized = await authService.Authorize(new() { Path = path , Roles = userRoles });
 
             if (!isAuthorized.IsSuccess)
             {
@@ -54,6 +59,7 @@ public class RoleAuthorizationMiddleware
                 await context.Response.WriteAsync(isAuthorized.Message!);
                 return;
             }
+            #endregion
 
             await _next(context);
         }

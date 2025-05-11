@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Todo.Core;
 
 namespace Todo.Service.Auth
@@ -25,38 +27,38 @@ namespace Todo.Service.Auth
         }
 
 
-        public ApiResponseDTO Authorize(AuthorizeDTO model)
+        public async Task<ApiResponseDTO> Authorize(AuthorizeDTO model)
         {
             // Veritabanı sorgusu
             var actionRoleEntries = _actionRoleRepository.Where(ar => ar.Action == model.Path);
 
-            // Veritabanı erişim hatası
             if (!actionRoleEntries.IsSuccess)
             {
                 return ApiResponseDTO.Unauthorized("Erişim yetkilerine erişimde hata.");
             }
 
-            // Null kontrolü
-            var rolesData = actionRoleEntries.Data;
+            var rolesData = await actionRoleEntries.Data.ToListAsync();
             if (rolesData == null || !rolesData.Any())
             {
                 return ApiResponseDTO.Unauthorized("Erişim Reddedildi: Yetkiniz yok.");
             }
 
-            // IsPublic kontrolü
+            // Public kontrolü
             if (rolesData.Any(ar => ar.IsPublic))
             {
-                return ApiResponseDTO.Success(null, "Kullanıcı yetkili.");
+                return ApiResponseDTO.Success(null, "Kullanıcı yetkili (public erişim).");
             }
 
-            // Kullanıcı rollerinin kontrolü
-            var hasValidRole = rolesData.Any(x => x.Roles.Contains(model.Role));
+            // Kullanıcının sahip olduğu rollerden biri erişime yetkili mi?
+            var hasValidRole = rolesData.Any(ar =>
+                ar.Roles.Split(',').Any(role =>
+                    model.Roles.Contains(role.Trim(), StringComparer.OrdinalIgnoreCase)));
+
             if (hasValidRole)
             {
                 return ApiResponseDTO.Success(null, "Kullanıcı yetkili.");
             }
 
-            // Yetkisiz erişim
             return ApiResponseDTO.Unauthorized("Erişim Reddedildi: Yetkiniz yok.");
         }
 

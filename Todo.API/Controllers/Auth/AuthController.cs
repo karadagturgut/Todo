@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Todo.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Todo.API.Controllers.Auth
 {
@@ -69,6 +70,7 @@ namespace Todo.API.Controllers.Auth
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

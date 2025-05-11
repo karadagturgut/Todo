@@ -94,7 +94,7 @@ namespace Todo.Data
                 if (result <= 0)
                     return GenericResponse<bool>.ErrorResponse("Güncelleme işlemi sırasında hata.");
 
-                return GenericResponse<bool>.SuccessResponse(true,null);
+                return GenericResponse<bool>.SuccessResponse(true, null);
             }
             catch (Exception ex)
             {
@@ -107,12 +107,17 @@ namespace Todo.Data
             try
             {
                 var returnList = _dbSet.Where(expression).AsNoTracking();
-                return GenericResponse<IQueryable<T>>.SuccessResponse(returnList,null);
+                return GenericResponse<IQueryable<T>>.SuccessResponse(returnList, null);
             }
             catch (Exception ex)
             {
-               return GenericResponse<IQueryable<T>>.ErrorResponse(ex.Message);
+                return GenericResponse<IQueryable<T>>.ErrorResponse(ex.Message);
             }
+        }
+
+        public IQueryable<T> WhereQueryable(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
         }
     }
 }

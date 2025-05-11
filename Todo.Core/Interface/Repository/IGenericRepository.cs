@@ -17,6 +17,8 @@ namespace Todo.Core
         GenericResponse<bool> Update(T entity);
         GenericResponse<bool> DeleteById(int id);
         GenericResponse<IQueryable<T>> Where(Expression<Func<T, bool>> expression);
+        public IQueryable<T> WhereQueryable(Expression<Func<T, bool>> expression);
+
         #endregion
 
 

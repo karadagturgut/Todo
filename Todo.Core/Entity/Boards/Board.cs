@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Todo.Core.Entity;
+using Todo.Core.Entity.Base;
 
 namespace Todo.Core
 {
-    [Table("Boards")]
-    public class Board
+    public class Board : MultiTenantEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public bool Status { get; set; } = true;
-        public int OrganizationId { get; set; }
     }
 }
