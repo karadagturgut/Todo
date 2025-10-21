@@ -3,7 +3,7 @@
 ### Ekleniyor.
 
 # Todo API
-Görev ekleme, silme, güncelleme, kriterlere göre filtreleme işlemlerini yapan bir RESTful API.
+Bu proje küçük-orta ölçekli bir görev yönetim (Todo) API'sidir. Temel amaç ekiplerin board bazlı görev (assignment) yönetimini sağlamak; ayrıca doküman yükleme, organizasyon yönetimi, zaman takibi ve yorum üzerinden iletişim özellikleri içerir.
 
 ## [Swagger URL](https://apitodo.runasp.net/swagger/index.html)
 
