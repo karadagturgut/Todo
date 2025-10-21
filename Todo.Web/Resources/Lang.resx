@@ -249,6 +249,10 @@
   <data name="SignInContinue" xml:space="preserve">
     <value>Devam etmek için giriş yapınız.</value>
   </data>
+  <data name="SignInUpper" xml:space="preserve">
+    <value>GİRİŞ</value>
+    <comment>SIGN IN</comment>
+  </data>
   <data name="SignUp" xml:space="preserve">
     <value>Kayıt Ol</value>
   </data>

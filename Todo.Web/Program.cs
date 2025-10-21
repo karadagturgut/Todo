@@ -40,7 +40,7 @@ builder.Services.AddDbContext<TodoContext>(options =>
 
 
 
-builder.Services.RegisterServiceLayer();
+builder.Services.RegisterServiceLayer(builder.Configuration);
 
 
 builder.Services.ConfigureApplicationCookie(options =>

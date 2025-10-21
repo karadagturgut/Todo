@@ -16,7 +16,7 @@ namespace Todo.Core
         public string? IpAddress { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; } = null;
     }
 
     public record LoginDTO (string UserName, string Password);

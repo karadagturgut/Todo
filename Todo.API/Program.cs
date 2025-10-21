@@ -4,18 +4,22 @@ using Todo.Data;
 using Todo.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-var conStr = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration.GetConnectionString("SQL"); 
+var conStr = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration.GetConnectionString("SQL");
 builder.Services.AddDbContext<TodoContext>(options => options.UseSqlServer(conStr));
-builder.Services.RegisterServiceLayer();
+builder.Services.RegisterServiceLayer(builder.Configuration);
 builder.Services.AddMemoryCache();
 // Add services to the container.
 
-builder.Services.AddControllers(opt=> opt.Filters.Add<UserInfoActionFilter>()).AddJsonOptions(opt => opt.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
+var jwt = builder.Configuration.GetSection("Jwt").Get<Todo.Core.Configurations.JwtSettings>();
+Todo.Service.ServiceHelper.Init(jwt);
+
+builder.Services.AddControllers(opt => opt.Filters.Add<UserInfoActionFilter>()).AddJsonOptions(opt => opt.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Todo API",
@@ -41,16 +45,13 @@ builder.Services.AddSwaggerGen(c => {
             new string[] {}
         }
     });
-}); 
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

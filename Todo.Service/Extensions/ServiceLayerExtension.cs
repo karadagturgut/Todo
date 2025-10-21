@@ -12,13 +12,16 @@ using Todo.Data;
 using Todo.Service.Extensions.Map;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Todo.Core.Configurations;
+using Microsoft.Extensions.Options;
 
 
 namespace Todo.Service
 {
     public static class ServiceLayerExtension
     {
-        public static IServiceCollection RegisterServiceLayer(this IServiceCollection services)
+        public static IServiceCollection RegisterServiceLayer(this IServiceCollection services, IConfiguration configuration)
         {
 
             #region AutoMapper
@@ -30,18 +33,18 @@ namespace Todo.Service
             #region Sınıflar
             var awsOptions = new AmazonS3Config
             {
-                RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))
+                RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION") ?? configuration["AWS_REGION"])
             };
 
             services.AddSingleton<IAmazonS3>(sp =>
             {
                 return new AmazonS3Client(
-                    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
-                    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
+                    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID") ?? configuration["AWS_ACCESS_KEY_ID"],
+                    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY") ?? configuration["AWS_SECRET_ACCESS_KEY"],
                     awsOptions);
             });
 
-           
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<FileService>();
 
@@ -88,15 +91,16 @@ namespace Todo.Service
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
-                        ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey")))
+                        ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer") ?? configuration["JwtIssuer"],
+                        ValidAudience = Environment.GetEnvironmentVariable("JwtAudience") ?? configuration["JwtAudience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey") ?? configuration["JwtKey"]))
                     };
                 }).AddGoogle(google =>
                 {
-                    google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
-                    google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
+                    google.ClientId = Environment.GetEnvironmentVariable("GoogleClientId") ?? configuration["GoogleClientId"];
+                    google.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret") ?? configuration["GoogleClientSecret"];
                 });
+
 
             #endregion
 

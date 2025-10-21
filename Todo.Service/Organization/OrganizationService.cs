@@ -31,7 +31,7 @@ namespace Todo.Service
             var mapped = _mapper.Map<Organization>(model);
             var result = _repository.Add(mapped);
             if (!result.IsSuccess) { return ApiResponseDTO.Failed("Kayıt oluşturulurken hata."); }
-            return ApiResponseDTO.Success(null, "Kayıt başarılı.");
+            return ApiResponseDTO.Success(result.Data?.Id, "Kayıt başarılı.");
         }
 
         public ApiResponseDTO AllOrganizations()
@@ -61,7 +61,7 @@ namespace Todo.Service
             return ApiResponseDTO.Success(result, "Kayıt güncellendi.");
         }
 
-        public ApiResponseDTO GetOrganization(DeleteOrganizationDTO model)
+        public ApiResponseDTO GetOrganization(GetOrganizationDTO model)
         {
             var existingRecord = _repository.GetById(model.Id);
             if (!existingRecord.IsSuccess || existingRecord.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }

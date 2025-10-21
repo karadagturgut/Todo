@@ -249,6 +249,9 @@
   <data name="SignInContinue" xml:space="preserve">
     <value>Sign in to continue.</value>
   </data>
+  <data name="SignInUpper" xml:space="preserve">
+    <value>SIGN IN</value>
+  </data>
   <data name="SignUp" xml:space="preserve">
     <value>Sign Up</value>
   </data>

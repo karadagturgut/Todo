@@ -180,6 +180,9 @@
   <data name="Password" xml:space="preserve">
     <value>Şifre</value>
   </data>
+  <data name="SignInUpper" xml:space="preserve">
+    <value />
+  </data>
   <data name="SignUp" xml:space="preserve">
     <value>Kayıt Ol</value>
   </data>

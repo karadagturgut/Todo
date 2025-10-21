@@ -20,4 +20,10 @@ namespace Todo.Core.DTO
     {
         public int Id { get; set; }
     }
+
+    public class GetOrganizationDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }
