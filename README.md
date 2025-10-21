@@ -5,7 +5,7 @@
 # Todo API
 Görev ekleme, silme, güncelleme, kriterlere göre filtreleme işlemlerini yapan bir RESTful API.
 
-## [Swagger URL](https://apitodo.azurewebsites.net/swagger/index.html)
+## [Swagger URL](https://apitodo.runasp.net/swagger/index.html)
 
 
 ## Assignment:
