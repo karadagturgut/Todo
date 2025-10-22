@@ -27,10 +27,11 @@ namespace Todo.Data
         public DbSet<AssignmentComment> AssignmentComments { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<OrganizationParticipationRequest> OrganizationParticipationRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ActionRole>().HasData(
                 new ActionRole { Id = 1, Action = "/Auth/Login", Roles = "", IsPublic = true },
@@ -71,12 +72,6 @@ namespace Todo.Data
             modelBuilder.Entity<Organization>()
                 .HasIndex(o => o.Name)
                 .IsUnique();
-
-            modelBuilder.Entity<Board>()
-                .HasOne(b => b.Organization)
-                .WithMany()
-                .HasForeignKey(b => b.OrganizationId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Assignment>()
                 .HasOne(a => a.Board)
@@ -161,6 +156,9 @@ namespace Todo.Data
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<UserTimeTracker>()
+            .Property(x => x.TimeSpent)
+            .HasPrecision(18, 2);
         }
 
     }

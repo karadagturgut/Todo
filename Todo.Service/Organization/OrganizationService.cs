@@ -14,7 +14,6 @@ namespace Todo.Service
     {
         private readonly IGenericRepository<Organization> _repository;
         private readonly IMapper _mapper;
-
         public OrganizationService(IGenericRepository<Organization> repository, IMapper mapper)
         {
             _repository = repository;
@@ -63,14 +62,18 @@ namespace Todo.Service
 
         public ApiResponseDTO GetOrganization(GetOrganizationDTO model)
         {
-            var existingRecord = _repository.GetById(model.Id);
-            if (!existingRecord.IsSuccess || existingRecord.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }
-
-            var result = _repository.Update(existingRecord.Data);
-            if (!result.IsSuccess)
-                return ApiResponseDTO.Failed("Kayıt güncellenirken hata.");
-
-            return ApiResponseDTO.Success(existingRecord.Data as Organization, "Kayıt güncellendi.");
+            if (model.Id != null)
+            {
+                var existingRecord = _repository.GetById((int)model.Id);
+                if (!existingRecord.IsSuccess || existingRecord.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }
+                return ApiResponseDTO.Success(existingRecord.Data as Organization, "Organizasyon:");
+            }
+            else
+            {
+                var exisiting = _repository.Where(x => x.Equals(model.Name));
+                if (!exisiting.IsSuccess || exisiting.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }
+                return ApiResponseDTO.Success(exisiting.Data.FirstOrDefault() as Organization, "Organizasyon:");
+            }
         }
     }
 }

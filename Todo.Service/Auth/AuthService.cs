@@ -114,7 +114,7 @@ namespace Todo.Service.Auth
                 var checkRoles = await CheckRoles(roles);
                 if (checkRoles)
                 {
-                    await _userManager.AddToRolesAsync(user, roles);
+                    await _userManager.AddToRolesAsync(user, model.Roles ?? roles);
                     return ApiResponseDTO.Success(user.Id, "Kullanıcı başarıyla oluşturuldu.");
                 }
                 return ApiResponseDTO.Failed("Rol atama sırasında bir hata oluştu.");

@@ -28,8 +28,6 @@ namespace Todo.Service
             services.AddAutoMapper(cfg => cfg.Internal().MethodMappingEnabled = false, typeof(MapProfile).Assembly);
             #endregion
 
-
-
             #region Sınıflar
             var awsOptions = new AmazonS3Config
             {

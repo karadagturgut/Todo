@@ -23,7 +23,9 @@ namespace Todo.Core.DTO
 
     public class GetOrganizationDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
     }
+
+  
 }

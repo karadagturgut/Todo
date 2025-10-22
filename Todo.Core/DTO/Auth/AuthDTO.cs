@@ -17,6 +17,7 @@ namespace Todo.Core
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public int? OrganizationId { get; set; } = null;
+        public List<string>? Roles { get; set; }
     }
 
     public record LoginDTO (string UserName, string Password);

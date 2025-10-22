@@ -14,5 +14,6 @@ namespace Todo.Core.Entity
         public string Name { get; set; }
         public virtual ICollection<Board> Boards { get; set; }
         public virtual ICollection<TodoUser> Users { get; set; }
+        public virtual ICollection<OrganizationParticipationRequest> OrganizationParticipationRequests { get; set; }
     }
 }
