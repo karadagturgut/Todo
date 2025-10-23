@@ -61,12 +61,14 @@ namespace Todo.Data
                 new ActionRole { Id = 33, Action = "/Organization/AddOrganization", Roles = "SuperAdmin,Admin", IsPublic = false },
                 new ActionRole { Id = 34, Action = "/Organization/DeleteOrganization", Roles = "SuperAdmin,Admin", IsPublic = false },
                 new ActionRole { Id = 35, Action = "/Organization/UpdateOrganization", Roles = "SuperAdmin,Admin", IsPublic = false },
-                new ActionRole { Id = 36, Action = "/RecentlyVisited/Get", Roles = "SuperAdmin,Admin", IsPublic = false },
+                new ActionRole { Id = 36, Action = "/RecentlyVisited/Get", Roles = "SuperAdmin,Admin,User", IsPublic = false },
                 new ActionRole { Id = 37, Action = "/TimeTracker/Add", Roles = "SuperAdmin,Admin,User", IsPublic = false },
                 new ActionRole { Id = 39, Action = "/TimeTracker/Update", Roles = "SuperAdmin,Admin,User", IsPublic = false },
                 new ActionRole { Id = 40, Action = "/TimeTracker/Get", Roles = "SuperAdmin,Admin,User", IsPublic = false },
                 new ActionRole { Id = 41, Action = "/TimeTracker/Delete", Roles = "SuperAdmin,Admin,User", IsPublic = false },
-                new ActionRole { Id = 42, Action = "/UserRole/SetRoles", Roles = "SuperAdmin", IsPublic = false }
+                new ActionRole { Id = 42, Action = "/UserRole/SetRoles", Roles = "SuperAdmin", IsPublic = false },
+                new ActionRole { Id = 43, Action = "/OrganizationParticipation/DecideUserJoinStatus", Roles = "SuperAdmin,Admin", IsPublic = false },
+                new ActionRole { Id = 44, Action = "/OrganizationParticipation/OrganizationJoinRequest", Roles = "Admin,User", IsPublic = false }
             );
 
             modelBuilder.Entity<Organization>()

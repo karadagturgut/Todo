@@ -103,7 +103,7 @@ namespace Todo.Web.Controllers.Auth
                     if (participatingOrganization.IsSuccess && participatingOrganization.Data is Core.Entity.Organization org)
                     {
                         int organizationId = org.Id;
-                        _organizationParticipationService.OrganizationJoinRequest(new() { UserId = (int)userResult.Data, OrganizationId = (int)participatingOrganization.Data });
+                        _organizationParticipationService.OrganizationJoinRequest(new() { UserId = (int)userResult.Data, OrganizationId = org.Id });
 
                         return RedirectToAction("Index", "Home");
                     }

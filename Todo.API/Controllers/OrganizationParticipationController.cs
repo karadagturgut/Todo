@@ -6,7 +6,7 @@ using Todo.Core.Interface.Service.OrganizationParticipation;
 
 namespace Todo.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class OrganizationParticipationController : BaseController
     {

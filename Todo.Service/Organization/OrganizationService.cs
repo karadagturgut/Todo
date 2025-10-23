@@ -70,7 +70,7 @@ namespace Todo.Service
             }
             else
             {
-                var exisiting = _repository.Where(x => x.Equals(model.Name));
+                var exisiting = _repository.Where(x => x.Name.Equals(model.Name));
                 if (!exisiting.IsSuccess || exisiting.Data is null) { return ApiResponseDTO.Failed("Kayıt bulunamadı."); }
                 return ApiResponseDTO.Success(exisiting.Data.FirstOrDefault() as Organization, "Organizasyon:");
             }
